@@ -5,5 +5,12 @@ export const PAGES = [
     name: 'Home',
     path: '/',
     component: Home,
+    isDisplayNavbar: false,
+  },
+  {
+    name: 'גרפים',
+    path: '/graphs',
+    component: Home,
+    isDisplayNavbar: true,
   },
 ]
