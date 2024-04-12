@@ -3,24 +3,28 @@ import { Event } from '../models/event'
 
 type EventContextType = {
   event: Event | undefined
-  setEvent: (event: Event) => void
+  changeEvent: (event: Event) => void
 }
 
 const EventContext = React.createContext<EventContextType>({
   event: undefined,
-  setEvent: () => {},
+  changeEvent: () => {},
 })
 
-const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [event, setEvent] = React.useState<Event>({
-    id: 10,
-    name: '',
-    isTraining: false,
-    createdAt: '',
-    updatedAt: '',
-  })
+const getEvent = () => {
+  const event = localStorage.getItem('event') ? JSON.parse(localStorage.getItem('event')!) : {}
+  return event
+}
 
-  return <EventContext.Provider value={{ event, setEvent }}>{children}</EventContext.Provider>
+const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [event, setEvent] = React.useState<Event>(getEvent())
+
+  const changeEvent = (event: Event) => {
+    setEvent(event)
+    localStorage.setItem('event', JSON.stringify(event))
+  }
+
+  return <EventContext.Provider value={{ event, changeEvent }}>{children}</EventContext.Provider>
 }
 
 export { EventProvider, EventContext }
