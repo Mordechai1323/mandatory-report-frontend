@@ -12,7 +12,7 @@ const EventContext = React.createContext<EventContextType>({
 })
 
 const getEvent = () => {
-  const event = localStorage.getItem('event') ? JSON.parse(localStorage.getItem('event')!) : {}
+  const event = localStorage.getItem('event') ? JSON.parse(localStorage.getItem('event')!) : undefined
   return event
 }
 
