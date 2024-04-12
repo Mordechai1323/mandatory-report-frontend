@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.29.2",
     "@types/socket.io-client": "^3.0.0",
     "axios": "^1.6.8",
     "moment": "^2.30.1",
