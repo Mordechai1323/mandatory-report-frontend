@@ -49,34 +49,9 @@ export const GlobalStyles = createGlobalStyle`
         list-style: none;
     }
 
-    button {
-        background-color: ${(props) => props.theme.colors.primary};
-        border: none;
-        color: ${(props) => props.theme.colors.text};
-        cursor: pointer;
 
-        &:hover{
-                    background-color: ${(props) => props.theme.colors.secondary};
-        }
-    }
 
-    input {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 0.5rem;
-        outline: none;
-    }
 
-    select {
-        cursor: pointer;
-    }
-
-    textarea {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 0.5rem;
-        outline: none;
-    }
 
     table {
         border-collapse: collapse;
