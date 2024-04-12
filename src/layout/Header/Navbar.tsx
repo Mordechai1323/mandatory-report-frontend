@@ -1,7 +1,7 @@
-import React from 'react'
 import styled from 'styled-components'
-import { PAGES } from '../../constants/pages'
 import { Link } from 'react-router-dom'
+
+import { PAGES } from '../../constants/pages'
 
 export const Navbar = () => {
   return (
@@ -10,7 +10,7 @@ export const Navbar = () => {
         if (page.isDisplayNavbar) {
           return (
             <Link key={page.path} to={page.path}>
-              {page.name}
+              <img src={page.icon} alt={page.name} />
             </Link>
           )
         }
@@ -23,6 +23,7 @@ const NavbarStyle = styled.div`
   display: flex;
   width: 80%;
   align-items: end;
+  margin-left: 0.5rem;
   a {
     margin: 0 0.5rem;
   }
