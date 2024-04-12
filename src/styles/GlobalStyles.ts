@@ -1,26 +1,54 @@
 import { createGlobalStyle } from 'styled-components'
 
+import SegoeUIWoff from '../assets/fonts/SegoeUI.woff'
+import SegoeUIWoff2 from '../assets/fonts/SegoeUI.woff2'
+import SegoeUIBoldWoff from '../assets/fonts/SegoeUI-Bold.woff'
+import SegoeUIBoldWoff2 from '../assets/fonts/SegoeUI-Bold.woff2'
+
 export const GlobalStyles = createGlobalStyle`
+
+    @font-face {
+        font-family: 'Segoe UI';
+        src: local('Segoe UI'), local('SegoeUI'),
+        url(${SegoeUIWoff2}) format('woff2')
+        url(${SegoeUIWoff}) format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Segoe UI';
+        src: local('Segoe UI'), local('SegoeUI'),
+        url(${SegoeUIBoldWoff2}) format('woff2')
+        url(${SegoeUIBoldWoff}) format('woff');
+        font-weight: bold;
+        font-style: normal;
+    }
+
     * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
     }
 
     body {
         background-color: ${(props) => props.theme.colors.background};
-        font-family: "Open Sans", sans-serif;
+        font-family: 'Segoe UI', sans-serif;
         direction: rtl;
     }
-    h1, h2, h3, h4, h5, h6, p , span, a {
+
+    h1, h2, h3, h4,  h5, h6, p, span, a {
         color: ${(props) => props.theme.colors.text};
     }
+
     a {
         text-decoration: none;
     }
+
     ul {
         list-style: none;
     }
+
     button {
         background-color: ${(props) => props.theme.colors.primary};
         border: none;
@@ -28,33 +56,36 @@ export const GlobalStyles = createGlobalStyle`
         cursor: pointer;
 
         &:hover{
-            background-color: ${(props) => props.theme.colors.secondary};
+                    background-color: ${(props) => props.theme.colors.secondary};
         }
     }
+
     input {
         border: 1px solid #ccc;
         border-radius: 5px;
         padding: 0.5rem;
         outline: none;
     }
+
     select {
         cursor: pointer;
     }
+
     textarea {
         border: 1px solid #ccc;
         border-radius: 5px;
         padding: 0.5rem;
         outline: none;
     }
+
     table {
         border-collapse: collapse;
         width: 100%;
     }
+
     th, td {
         border: 1px solid #ccc;
         padding: 0.5rem;
     }
 
-    
-
-    `
+`
