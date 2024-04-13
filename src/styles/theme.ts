@@ -11,6 +11,7 @@ interface Theme {
     secondary: string
     border: string
     text: string
+    important: string
   }
 }
 
@@ -21,6 +22,7 @@ const lightTheme: Theme = {
     secondary: '#F4F4F4',
     border: '#DEDEDE',
     text: 'black',
+    important: '#D30000',
   },
 }
 
@@ -31,6 +33,7 @@ const darkTheme: Theme = {
     secondary: '#F4F4F4',
     border: '#DEDEDE',
     text: 'black',
+    important: '#D30000',
   },
 }
 
