@@ -1,15 +1,40 @@
+import React from 'react'
 import styled from 'styled-components'
 
+import { socket } from '../../socket'
 import { AddReport } from './AddReport'
+import { useEvent } from '../../hooks/useEvent'
+import { ReportFormPopup } from './ReportFormPopup'
 import { Event } from '../../components/Events/Event'
 import { ReportsTable } from '../../components/Reports/ReportsTable'
 
 export const Home = () => {
+  const [isAddReportPopupOpen, setIsAddReportPopupOpen] = React.useState(false)
+  const { event } = useEvent()
+
+  React.useEffect(() => {
+    if (event) socket.on('connect', () => console.log(socket.id))
+
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+
   return (
     <HomeStyle>
       <Event />
-      <ReportsTable />
-      <AddReport />
+      {event && (
+        <>
+          <ReportsTable />
+          <AddReport openAddReportPopup={() => setIsAddReportPopupOpen(true)} />
+          <ReportFormPopup
+            isOpen={isAddReportPopupOpen}
+            handleClose={() => setIsAddReportPopupOpen(false)}
+            title="הוספת דיווח"
+            eventId={event.id}
+          />
+        </>
+      )}
     </HomeStyle>
   )
 }
@@ -20,12 +45,4 @@ const HomeStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-
-  margin-top: 3rem;
-  .reports-table {
-    width: 90%;
-    height: 90%;
-    overflow: auto;
-  }
 `
