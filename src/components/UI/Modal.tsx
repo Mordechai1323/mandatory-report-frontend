@@ -40,13 +40,6 @@ const ModalHeader = styled.div`
   align-items: center;
 `
 
-// const ModalCloseButton = styled.button`
-//   background: none;
-//   border: none;
-//   cursor: pointer;
-//   font-size: 24px;
-//   padding: 0;
-// `
 
 const ModalContent = styled.div`
   padding: 20px 0;
@@ -64,7 +57,6 @@ export const Modal = ({ isOpen, onClose, title, children, style }: ModalProps) =
       <ModalContainer $style={style}>
         <ModalHeader>
           <h2>{title}</h2>
-          {/* <ModalCloseButton onClick={onClose}>&times;</ModalCloseButton> */}
         </ModalHeader>
         <ModalContent>{children}</ModalContent>
       </ModalContainer>
