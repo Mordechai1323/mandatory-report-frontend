@@ -1,4 +1,4 @@
-export type ReportsType = {
+export type ReportType = {
     id: number
     name: string
     style: string
