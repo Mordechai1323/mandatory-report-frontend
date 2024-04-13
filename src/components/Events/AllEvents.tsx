@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { socket } from '../../socket'
 import { Event } from '../../models/event'
 import { useEvent } from '../../hooks/useEvent'
 import { useAllEvents } from '../../hooks/useAllEvents'
@@ -28,7 +29,11 @@ export const AllEvents = ({ closeChooseEventPopup }: AllEventsProps) => {
   return (
     <AllEventsStyle>
       <ChooseEventType eventType={eventType} setEventType={setEventType} />
-      <Events allEvents={allEvents} eventType={eventType} closeChooseEventPopup={closeChooseEventPopup} />
+      <Events
+        allEvents={allEvents}
+        eventType={eventType}
+        closeChooseEventPopup={closeChooseEventPopup}
+      />
     </AllEventsStyle>
   )
 }
@@ -54,14 +59,15 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
 }
 
 const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) => {
-  const { changeEvent } = useEvent()
+  const { event, changeEvent } = useEvent()
   const filteredData = React.useMemo(
     () => allEvents?.filter((ele) => (eventType === 'תרגיל' ? ele.isTraining : !ele.isTraining)),
     [eventType, allEvents]
   )
 
-  const changeEventHandler = (event: Event) => {
-    changeEvent(event)
+  const changeEventHandler = (newEvent: Event) => {
+    if (event) socket.emit('leaveRoom', event.id)
+    changeEvent(newEvent)
     closeChooseEventPopup()
   }
 
