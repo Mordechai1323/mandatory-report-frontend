@@ -29,7 +29,6 @@ export const Event = () => {
   const date = moment(event?.createdAt)
   const formatInHebrew = date.format('MMMM YY')
 
-  console.log(isChooseEventPopupOpen)
 
   return (
     <EventStyle>
