@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { EventType, eventsTypes } from '../../constants/events'
-import { useQueryCustom } from '../../hooks/useQueryCustom'
-import { useEvent } from '../../hooks/useEvent'
-import { fetchEvents } from '../../api/events'
 import { Event } from '../../models/event'
+import { useEvent } from '../../hooks/useEvent'
+import { useAllEvents } from '../../hooks/useAllEvents'
+import { EventType, eventsTypes } from '../../constants/events'
 
 interface AllEventsProps {
   closeChooseEventPopup: () => void
@@ -17,19 +16,19 @@ interface ChooseEventTypeProps {
 }
 
 interface EventsProps {
-  data: Event[] | undefined
+  allEvents: Event[] | undefined
   eventType: EventType
   closeChooseEventPopup: () => void
 }
 
 export const AllEvents = ({ closeChooseEventPopup }: AllEventsProps) => {
-  const { data } = useQueryCustom(['events'], fetchEvents)
+  const { allEvents } = useAllEvents()
   const [eventType, setEventType] = React.useState<EventType>('חירום')
 
   return (
     <AllEventsStyle>
       <ChooseEventType eventType={eventType} setEventType={setEventType} />
-      <Events data={data} eventType={eventType} closeChooseEventPopup={closeChooseEventPopup} />
+      <Events allEvents={allEvents} eventType={eventType} closeChooseEventPopup={closeChooseEventPopup} />
     </AllEventsStyle>
   )
 }
@@ -54,11 +53,11 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
   )
 }
 
-const Events = ({ data, eventType, closeChooseEventPopup }: EventsProps) => {
+const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) => {
   const { changeEvent } = useEvent()
   const filteredData = React.useMemo(
-    () => data?.filter((ele) => (eventType === 'תרגיל' ? ele.isTraining : !ele.isTraining)),
-    [eventType, data]
+    () => allEvents?.filter((ele) => (eventType === 'תרגיל' ? ele.isTraining : !ele.isTraining)),
+    [eventType, allEvents]
   )
 
   const changeEventHandler = (event: Event) => {
