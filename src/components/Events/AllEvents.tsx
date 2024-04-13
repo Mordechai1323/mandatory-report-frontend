@@ -69,7 +69,6 @@ const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) =>
     if (event) socket.emit('leaveRoom', event.id)
     changeEvent(newEvent)
     closeChooseEventPopup()
-    //
   }
 
   return (
