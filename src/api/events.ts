@@ -1,4 +1,4 @@
-import { Event } from '../models/event'
+import { Event, EventForm } from '../models/event'
 import { handlerError } from '../utils/handlerError'
 import { axiosPrivate } from './api'
 
@@ -12,7 +12,7 @@ const fetchEvents = async () => {
   }
 }
 
-const createEvent = async (event: Event) => {
+const createEvent = async (event: EventForm) => {
   try {
     const response = await axiosPrivate.post<Event>('/events', event)
 
