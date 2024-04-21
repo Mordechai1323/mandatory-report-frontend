@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 
@@ -9,46 +10,53 @@ import editIcon from '../../assets/icons/edit.svg'
 interface ReportItemProps {
   report: Report
   editReportHandler: (report: Report) => void
+  ref?: (element: HTMLDivElement) => void
 }
 
-export const ReportItem = ({ report, editReportHandler }: ReportItemProps) => {
-  const deleteReportHandler = (report: Report) => {
-    socket.emit('deleteReport', report)
+export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
+  ({ report, editReportHandler }, ref) => {
+    const deleteReportHandler = (report: Report) => {
+      socket.emit('deleteReport', report)
+    }
+
+    const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
+
+    return (
+      <ReportItemStyle
+        $isImportant={report.isImportant}
+        $reportTypeStyle={report.reportType.style}
+        ref={ref}
+      >
+        <div className="report-type-style-start"></div>
+        <div className="id">{report.id}</div>
+        <div className="department">
+          {report.department.name} - {report.department.phone}
+        </div>
+        <div className="date">{moment(report.createdAt).format('DD/MM/YY')}</div>
+        <div className="hour">{moment(report.createdAt).format('HH:mm')}</div>
+        <div className="area">{report.area.name}</div>
+        <div className="content">
+          {`${
+            report.createdAt !== report.updatedAt
+              ? `נערך  ${moment(report.updatedAt).format('HH:mm')} -`
+              : ''
+          } ${report.content}`}
+        </div>
+        <div className="report-type">{report.reportType.name}</div>
+        <div className="delete-or-edit">
+          <img
+            src={editIcon}
+            alt="edit"
+            onClick={() => editReportHandler(report)}
+            style={{ visibility: isPassed15Minutes ? 'hidden' : 'visible' }}
+          />
+          <img src={deleteIcon} alt="delete" onClick={() => deleteReportHandler(report)} />
+        </div>
+        <div className="report-type-style-end"></div>
+      </ReportItemStyle>
+    )
   }
-
-  const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
-
-  return (
-    <ReportItemStyle $isImportant={report.isImportant} $reportTypeStyle={report.reportType.style}>
-      <div className="report-type-style-start"></div>
-      <div className="id">{report.id}</div>
-      <div className="department">
-        {report.department.name} - {report.department.phone}
-      </div>
-      <div className="date">{moment(report.createdAt).format('DD/MM/YY')}</div>
-      <div className="hour">{moment(report.createdAt).format('HH:mm')}</div>
-      <div className="area">{report.area.name}</div>
-      <div className="content">
-        {`${
-          report.createdAt !== report.updatedAt
-            ? `נערך  ${moment(report.updatedAt).format('HH:mm')} -`
-            : ''
-        } ${report.content}`}
-      </div>
-      <div className="report-type">{report.reportType.name}</div>
-      <div className="delete-or-edit">
-        <img
-          src={editIcon}
-          alt="edit"
-          onClick={() => editReportHandler(report)}
-          style={{ visibility: isPassed15Minutes ? 'hidden' : 'visible' }}
-        />
-        <img src={deleteIcon} alt="delete" onClick={() => deleteReportHandler(report)} />
-      </div>
-      <div className="report-type-style-end"></div>
-    </ReportItemStyle>
-  )
-}
+)
 
 type HomeStyleProps = {
   $isImportant: boolean
