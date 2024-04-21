@@ -43,7 +43,6 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
           <EventTypeContainer
             key={type}
             onClick={() => setEventType(type)}
-            className="event-type"
             style={{ borderBottomColor: isCurrent ? 'black' : '' }}
           >
             {type}
@@ -68,7 +67,7 @@ const Events = ({ allEvents, eventType, closeEventPopup }: EventsProps) => {
   }
 
   return (
-    <EventsContainer className="events">
+    <EventsContainer>
       {filteredData?.map((event) => (
         <EventItem key={event.id} onClick={() => changeEventHandler(event)}>
           {event.name}
@@ -80,22 +79,8 @@ const Events = ({ allEvents, eventType, closeEventPopup }: EventsProps) => {
 
 const AllEventsStyle = styled.div`
   width: 100%;
-  overflow: auto;
   padding-right: 2rem;
   margin-top: 2rem;
-
-  & .choose-event-type {
-    display: flex;
-    width: 100%;
-
-    & .event-type {
-      width: 50%;
-      text-align: center;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-      padding-bottom: 0.6rem;
-      cursor: pointer;
-    }
-  }
 `
 const ChooseEventTypeStyle = styled.div`
   display: flex;
