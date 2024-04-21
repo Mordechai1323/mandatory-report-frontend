@@ -63,4 +63,15 @@ export const GlobalStyles = createGlobalStyle`
         padding: 0.5rem;
     }
 
+
+&::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 6px;
+  }
+
+
 `
