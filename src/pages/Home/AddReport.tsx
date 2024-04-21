@@ -14,8 +14,8 @@ export const AddReport = () => {
 }
 
 const AddReportStyled = styled.div`
-  width: 11.5rem;
-  height: 94%;
+  width: 9rem;
+  height: 100%;
   background: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
