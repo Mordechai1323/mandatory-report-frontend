@@ -8,6 +8,7 @@ import { socket } from '../../socket'
 import { useAreas } from '../../hooks/useAreas'
 import { Modal } from '../../components/UI/Modal'
 import { Input } from '../../components/UI/Input'
+import { Alert } from '../../components/UI/Alert'
 import { Button } from '../../components/UI/Button'
 import { AddReportSelect } from './AddReportSelect'
 import { useDepartments } from '../../hooks/useDepartments'
@@ -31,6 +32,7 @@ export const ReportFormPopup = ({
 }: ReportFormPopupProps) => {
   const isEdit = !!report
   const [isLoading, setIsLoading] = React.useState(false)
+  const [popupType, setPopupType] = React.useState<'form' | 'success' | 'error'>('form')
   const {
     register,
     handleSubmit,
@@ -68,7 +70,16 @@ export const ReportFormPopup = ({
       socket.on('createReport', (report: Report) => {
         if (report.id) {
           setIsLoading(false)
-          handleClose()
+          setPopupType('success')
+          setTimeout(() => {
+            handleClose()
+          }, 2000)
+        } else {
+          setIsLoading(false)
+          setPopupType('error')
+          setTimeout(() => {
+            handleClose()
+          }, 2000)
         }
       })
     }
@@ -78,12 +89,12 @@ export const ReportFormPopup = ({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title={title}
+      title={popupType === 'form' ? title : ''}
       style={{ width: '32.8vw', height: '73vh' }}
     >
       {!departments || !areas || !reportsTypes ? (
         <Loading />
-      ) : (
+      ) : popupType === 'form' ? (
         <ReportFormPopupStyle onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="center">
             <Input
@@ -172,6 +183,10 @@ export const ReportFormPopup = ({
             </BottomContainer>
           </div>
         </ReportFormPopupStyle>
+      ) : popupType === 'success' ? (
+        <Alert message="הדיווח נוסף בהצלחה!" type="success" />
+      ) : (
+        <Alert message="הייתה בעיה בהוספת הדיווח, אנא נסה שנית" type="error" />
       )}
     </Modal>
   )
@@ -187,6 +202,7 @@ const ReportFormPopupStyle = styled.form`
 
   & .center {
     width: 90%;
+    height: 90%;
   }
 `
 const BottomContainer = styled.div`

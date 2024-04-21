@@ -40,9 +40,10 @@ const ModalHeader = styled.div`
   align-items: center;
 `
 
-
 const ModalContent = styled.div`
   padding: 20px 0;
+  height: 100%;
+  width: 100%;
 `
 
 export const Modal = ({ isOpen, onClose, title, children, style }: ModalProps) => {

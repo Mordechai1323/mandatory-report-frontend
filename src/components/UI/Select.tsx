@@ -44,8 +44,6 @@ export function Select({ props, children }: SelectProps) {
 }
 
 const SelectStyle = styled.div<{ $style: SelectStyle }>`
-  width: 100%;
-  height: 100%;
   margin-top: ${({ $style }) => $style?.marginTop || '0'};
 
   & label {

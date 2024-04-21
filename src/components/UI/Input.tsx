@@ -35,8 +35,6 @@ export function Input({ label, input, icon, style, errMessage }: InputProps) {
 }
 
 const InputStyle = styled.div<{ $style: InputStyle }>`
-  width: 100%;
-  height: 100%;
   margin-top: ${({ $style }) => $style?.marginTop || '0'};
   display: ${({ $style }) => $style?.display || 'block'};
   align-items: ${({ $style }) => $style?.alignItems || 'center'};
