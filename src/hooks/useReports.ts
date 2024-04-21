@@ -1,11 +1,19 @@
 import React from 'react'
-import { useEvent } from './useEvent'
+
 import { socket } from '../socket'
+import { useEvent } from './useEvent'
 import { Report } from '../models/report'
 
 export const useReports = () => {
   const [reports, setReports] = React.useState<Report[]>()
+  const [, setPage] = React.useState(1)
+  const [countPages, setCountPages] = React.useState(0)
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [isLoadingNexPage, setIsLoadingNexPage] = React.useState(false)
+
   const { event } = useEvent()
+
+  const perPage = 15
 
   React.useEffect(() => {
     socket.on('createReport', (report: Report) => {
@@ -30,34 +38,58 @@ export const useReports = () => {
       })
     })
 
+    socket.on('reports', (reports: Report[]) => {
+      setReports((prevState) => [...(prevState ?? []), ...reports])
+    })
+
     return () => {
       socket.off('newReport')
       socket.off('updateReport')
       socket.off('deleteReport')
+      socket.off('reports')
     }
   }, [socket])
 
   React.useEffect(() => {
     setReports(undefined)
+    setPage(1)
+    setIsLoading(true)
     if (event) {
       socket.emit('joinRoom', event.id)
-      socket.on('joinedRoomSuccessfully', (res) => {
-        if (res === `Joined to room ${event.id} successfully`) getReports(event.id)
+      socket.on('joinedRoomSuccessfully', async (res) => {
+        if (res === `Joined to room ${event.id} successfully`) {
+          getReports()
+          setIsLoading(false)
+        }
+      })
+      socket.on('reportsCount', (count: number) => {
+        setCountPages(Math.ceil(count / perPage))
       })
     }
 
     return () => {
       socket.off('joinedRoomSuccessfully')
-      socket.off('reports')
+      socket.off('reportsCount')
     }
   }, [event])
 
-  const getReports = (eventId: number, page = 1) => {
-    socket.emit('getReports', { eventId, page })
-    socket.on('reports', (reports: Report[]) => {
-      setReports((prevState) => [...(prevState ?? []), ...reports])
+  const getReports = (page = 1) => {
+    if (!event) return
+    socket.emit('getReports', { eventId: event.id, page, perPage })
+  }
+
+  const getNextPage = () => {
+    if (!event) return
+    setPage((prevPage) => {
+      if (prevPage === countPages) return prevPage
+      setIsLoadingNexPage(true)
+      const nextPage = prevPage + 1
+      getReports(nextPage)
+      setIsLoadingNexPage(false)
+
+      return nextPage
     })
   }
 
-  return { reports, setReports, getReports }
+  return { reports, setReports, getReports, getNextPage, isLoading, isLoadingNexPage }
 }
