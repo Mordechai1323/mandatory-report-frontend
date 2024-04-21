@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Logo } from './Logo'
 import { Navbar } from './Navbar'
 import UserIcon from '../../assets/icons/user.svg'
+import { AddReport } from '../../pages/Home/AddReport'
 
 export const Header = () => {
   return (
@@ -15,12 +16,16 @@ export const Header = () => {
             <h1>דיווחי חובה</h1>
           </Link>
         </div>
+        <div className="center-container">
+
+        </div>
         <div className="left-container">
           <Navbar />
           <div className="user">
             <span>username</span>
             <img src={UserIcon} alt="user icon" />
           </div>
+          <AddReport />
         </div>
       </div>
     </HeaderStyle>
@@ -41,7 +46,7 @@ const HeaderStyle = styled.div`
     align-items: end;
     justify-content: space-between;
     & .right-container {
-      width: 50%;
+      width: 33%;
       justify-content: space-between;
 
       & a {
@@ -54,14 +59,22 @@ const HeaderStyle = styled.div`
       }
     }
 
+    & .center-container {
+      width: 33%;
+    }
     & .left-container {
+      width: 33%;
       display: flex;
       align-items: end;
+      justify-content: end;
       height: 100%;
 
       & .user {
         display: flex;
         align-items: center;
+        width: 23%;
+        height: 70%;
+
         & img {
           margin-right: 0.5rem;
         }

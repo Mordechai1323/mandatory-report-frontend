@@ -21,7 +21,6 @@ export const Navbar = () => {
 
 const NavbarStyle = styled.div`
   display: flex;
-  width: 80%;
   align-items: end;
   margin-left: 0.5rem;
   a {

@@ -1,25 +1,24 @@
 import styled from 'styled-components'
 
-import addReportIcon from '../../assets/icons/plus.svg'
+import { useAddReport } from '../../hooks/useAddReport'
+import { Button } from '../../components/UI/Button'
 
-interface AddReportProps {
-  openAddReportPopup: () => void
-}
+export const AddReport = () => {
+  const { openAddReportPopup } = useAddReport()
 
-export const AddReport = ({ openAddReportPopup }: AddReportProps) => {
   return (
     <AddReportStyled onClick={openAddReportPopup}>
-      <img src={addReportIcon} alt="add report" />
+      <Button>+ הוספת דיווח</Button>
     </AddReportStyled>
   )
 }
 
 const AddReportStyled = styled.div`
-  position: absolute;
-  right: 0.9rem;
-  bottom: 1.9rem;
-  height: 4rem;
-  width: 4rem;
+  width: 11.5rem;
+  height: 94%;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
+  border-radius: 8px;
   cursor: pointer;
 
   & img {
