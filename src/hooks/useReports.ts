@@ -38,15 +38,11 @@ export const useReports = () => {
   }, [socket])
 
   React.useEffect(() => {
+    setReports(undefined)
     if (event) {
       socket.emit('joinRoom', event.id)
       socket.on('joinedRoomSuccessfully', (res) => {
-        if (res === `Joined to room ${event.id} successfully`) {
-          socket.emit('getReports', { eventId: event.id, page: 1 })
-          socket.on('reports', (reports: Report[]) => {
-            setReports(reports)
-          })
-        }
+        if (res === `Joined to room ${event.id} successfully`) getReports(event.id)
       })
     }
 
@@ -56,5 +52,12 @@ export const useReports = () => {
     }
   }, [event])
 
-  return { reports, setReports }
+  const getReports = (eventId: number, page = 1) => {
+    socket.emit('getReports', { eventId, page })
+    socket.on('reports', (reports: Report[]) => {
+      setReports((prevState) => [...(prevState ?? []), ...reports])
+    })
+  }
+
+  return { reports, setReports, getReports }
 }
