@@ -79,12 +79,16 @@ const Events = ({ allEvents, eventType, closeEventPopup }: EventsProps) => {
 
 const AllEventsStyle = styled.div`
   width: 100%;
+  height: 88%;
+  overflow: auto;
+  direction: ltr;
   padding-right: 2rem;
   margin-top: 2rem;
 `
 const ChooseEventTypeStyle = styled.div`
   display: flex;
   width: 100%;
+  direction: rtl;
 `
 const EventTypeContainer = styled.div`
   width: 50%;
@@ -95,6 +99,7 @@ const EventTypeContainer = styled.div`
 `
 const EventsContainer = styled.div`
   width: 100%;
+  direction: rtl;
 `
 const EventItem = styled.div`
   text-align: start;

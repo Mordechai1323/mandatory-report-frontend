@@ -38,7 +38,7 @@ const ChooseEventStyle = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    height: 2.5rem;
+    height: 9.5%;
 
     & .right-container {
       width: 70%;
