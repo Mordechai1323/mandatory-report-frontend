@@ -8,7 +8,7 @@ import { useAllEvents } from '../../hooks/useAllEvents'
 import { EventType, eventsTypes } from '../../constants/events'
 
 interface AllEventsProps {
-  closeChooseEventPopup: () => void
+  closeEventPopup: () => void
 }
 
 interface ChooseEventTypeProps {
@@ -19,21 +19,17 @@ interface ChooseEventTypeProps {
 interface EventsProps {
   allEvents: Event[] | undefined
   eventType: EventType
-  closeChooseEventPopup: () => void
+  closeEventPopup: () => void
 }
 
-export const AllEvents = ({ closeChooseEventPopup }: AllEventsProps) => {
+export const AllEvents = ({ closeEventPopup }: AllEventsProps) => {
   const { allEvents } = useAllEvents()
   const [eventType, setEventType] = React.useState<EventType>('חירום')
 
   return (
     <AllEventsStyle>
       <ChooseEventType eventType={eventType} setEventType={setEventType} />
-      <Events
-        allEvents={allEvents}
-        eventType={eventType}
-        closeChooseEventPopup={closeChooseEventPopup}
-      />
+      <Events allEvents={allEvents} eventType={eventType} closeEventPopup={closeEventPopup} />
     </AllEventsStyle>
   )
 }
@@ -58,7 +54,7 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
   )
 }
 
-const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) => {
+const Events = ({ allEvents, eventType, closeEventPopup }: EventsProps) => {
   const { event, changeEvent } = useEvent()
   const filteredData = React.useMemo(
     () => allEvents?.filter((ele) => (eventType === 'תרגיל' ? ele.isTraining : !ele.isTraining)),
@@ -68,7 +64,7 @@ const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) =>
   const changeEventHandler = (newEvent: Event) => {
     if (event) socket.emit('leaveRoom', event.id)
     changeEvent(newEvent)
-    closeChooseEventPopup()
+    closeEventPopup()
   }
 
   return (
