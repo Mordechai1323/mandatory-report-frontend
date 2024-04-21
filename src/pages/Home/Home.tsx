@@ -27,12 +27,14 @@ export const Home = () => {
         <>
           <ReportsTable />
           <AddReport openAddReportPopup={() => setIsAddReportPopupOpen(true)} />
-          <ReportFormPopup
-            isOpen={isAddReportPopupOpen}
-            handleClose={() => setIsAddReportPopupOpen(false)}
-            title="הוספת דיווח"
-            eventId={event.id}
-          />
+          {isAddReportPopupOpen && (
+            <ReportFormPopup
+              isOpen={isAddReportPopupOpen}
+              handleClose={() => setIsAddReportPopupOpen(false)}
+              title="הוספת דיווח"
+              eventId={event.id}
+            />
+          )}
         </>
       )}
     </HomeStyle>
