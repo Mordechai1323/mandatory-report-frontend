@@ -4,9 +4,9 @@ import styled from 'styled-components'
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  title: string
+  title?: string
   children: React.ReactNode
-  style: ModalStyle
+  style?: ModalStyle
 }
 
 type ModalStyle = {
@@ -56,10 +56,12 @@ export const Modal = ({ isOpen, onClose, title, children, style }: ModalProps) =
 
   return (
     <ModalOverlay onClick={handleOverlayClick}>
-      <ModalContainer $style={style}>
-        <ModalHeader>
-          <h2>{title}</h2>
-        </ModalHeader>
+      <ModalContainer $style={style ?? {}}>
+        {title && (
+          <ModalHeader>
+            <h2>{title}</h2>
+          </ModalHeader>
+        )}
         <ModalContent>{children}</ModalContent>
       </ModalContainer>
     </ModalOverlay>
