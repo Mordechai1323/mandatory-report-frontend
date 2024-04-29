@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import { Loading } from '../Loading'
 import { socket } from '../../socket'
+import { notify } from '../../utils/notify'
 import { useAreas } from '../../hooks/useAreas'
 import { Modal } from '../../components/UI/Modal'
 import { Input } from '../../components/UI/Input'
@@ -46,6 +47,7 @@ export const ReportFormPopup = ({
   const { areas } = useAreas()
   const { reportsTypes } = useReportsTypes()
 
+
   const handleSelectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target
 
@@ -62,6 +64,9 @@ export const ReportFormPopup = ({
         if (report.id) {
           setIsLoading(false)
           handleClose()
+          notify('success', 'הדיווח עודכן בהצלחה')
+        } else {
+          notify('error', 'הדיווח לא נשמר, נסה שוב')
         }
       })
     } else {
@@ -70,6 +75,9 @@ export const ReportFormPopup = ({
         if (report.id) {
           setIsLoading(false)
           handleClose()
+          notify('success', 'הדיווח נשלח בהצלחה')
+        } else {
+          notify('error', 'הדיווח לא נשלח, נסה שוב')
         }
       })
     }
