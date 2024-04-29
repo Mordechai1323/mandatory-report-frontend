@@ -47,7 +47,6 @@ export const ReportFormPopup = ({
   const { areas } = useAreas()
   const { reportsTypes } = useReportsTypes()
 
-
   const handleSelectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target
 
@@ -57,29 +56,40 @@ export const ReportFormPopup = ({
 
   const onSubmitHandler: SubmitHandler<ReportForm> = (data) => {
     setIsLoading(true)
+
+    const handleUpdateReport = (updatedReport: Report) => {
+      setIsLoading(false)
+      handleClose()
+
+      if (updatedReport.id) {
+        notify('success', 'הדיווח עודכן בהצלחה')
+      } else {
+        notify('error', 'הדיווח לא נשמר, נסה שוב')
+      }
+
+      socket.off('updateReport', handleUpdateReport)
+    }
+
+    const handleCreateReport = (createdReport: Report) => {
+      setIsLoading(false)
+      handleClose()
+
+      if (createdReport.id) {
+        notify('success', 'הדיווח נשלח בהצלחה')
+      } else {
+        notify('error', 'הדיווח לא נשלח, נסה שוב')
+      }
+
+      socket.off('createReport', handleCreateReport)
+    }
+
     if (isEdit && report) {
-      console.log('edit', data)
       socket.emit('updateReport', { ...data, id: report.id })
-      socket.on('updateReport', (report: Report) => {
-        if (report.id) {
-          setIsLoading(false)
-          handleClose()
-          notify('success', 'הדיווח עודכן בהצלחה')
-        } else {
-          notify('error', 'הדיווח לא נשמר, נסה שוב')
-        }
-      })
+      socket.on('updateReport', handleUpdateReport)
     } else {
+      //TODO: change to real user id
       socket.emit('createReport', { ...data, eventId, createdBy: '212555569' })
-      socket.on('createReport', (report: Report) => {
-        if (report.id) {
-          setIsLoading(false)
-          handleClose()
-          notify('success', 'הדיווח נשלח בהצלחה')
-        } else {
-          notify('error', 'הדיווח לא נשלח, נסה שוב')
-        }
-      })
+      socket.on('createReport', handleCreateReport)
     }
   }
 

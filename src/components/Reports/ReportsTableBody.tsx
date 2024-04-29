@@ -6,13 +6,21 @@ import { ReportItem } from './ReportItem'
 import { Report } from '../../models/report'
 import { Loading } from '../../pages/Loading'
 import { useReports } from '../../hooks/useReports'
+import { ReportDeleted } from './ReportDeleted'
 
 interface ReportsTableBodyProps {
   editReportHandler: (report: Report) => void
 }
 
 export const ReportsTableBody = ({ editReportHandler }: ReportsTableBodyProps) => {
-  const { reports, getNextPage, isLoading, isLoadingNexPage } = useReports()
+  const {
+    reports,
+    getNextPage,
+    isLoading,
+    isLoadingNexPage,
+    reportDeleted,
+    closeDeleteReportPopup,
+  } = useReports()
 
   const lastReportRef = React.useRef<HTMLDivElement>()
   const { ref, entry } = useIntersection({
@@ -39,6 +47,13 @@ export const ReportsTableBody = ({ editReportHandler }: ReportsTableBodyProps) =
         )
       })}
       {isLoadingNexPage && <Loading />}
+      {reportDeleted && (
+        <ReportDeleted
+          isOpen={!!reportDeleted}
+          report={reportDeleted}
+          onClose={closeDeleteReportPopup}
+        />
+      )}
     </ReportsTableBodyStyle>
   )
 }

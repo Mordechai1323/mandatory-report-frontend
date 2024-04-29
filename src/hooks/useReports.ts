@@ -10,46 +10,54 @@ export const useReports = () => {
   const [countPages, setCountPages] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isLoadingNexPage, setIsLoadingNexPage] = React.useState(false)
+  const [reportDeleted, setReportDeleted] = React.useState<Report>()
 
   const { event } = useEvent()
 
   const perPage = 10
 
   React.useEffect(() => {
-    socket.on('createReport', (report: Report) => {
-      if (!report.id) return
-      setReports((prevReports) => {
-        return [report, ...(prevReports ?? [])]
-      })
-    })
+    const handleCreateReport = (newReport: Report) => {
+      if (!newReport.id) return
 
-    socket.on('updateReport', (updateReport: Report) => {
-      if (!updateReport.id) return
+      setReports((prevReports) => [newReport, ...(prevReports ?? [])])
+    }
+
+    const handleUpdateReport = (updatedReport: Report) => {
+      if (!updatedReport.id) return
+
       setReports((prevReports) => {
-        const updateReports = prevReports?.map((report) =>
-          report.id === updateReport.id ? updateReport : report
+        return prevReports?.map((report) =>
+          report.id === updatedReport.id ? updatedReport : report
         )
-
-        return updateReports
       })
-    })
+    }
 
-    socket.on('deleteReport', (reportId: number) => {
-      if (!reportId) return
-      setReports((prevReports) => {
-        return prevReports?.filter((report) => report.id !== reportId)
-      })
-    })
+    const handleDeleteReport = (deletedReport: Report) => {
+      if (!deletedReport.id) return
 
-    socket.on('reports', (reports: Report[]) => {
-      setReports((prevState) => [...(prevState ?? []), ...reports])
-    })
+      setReports((prevReports) => prevReports?.filter((report) => report.id !== deletedReport.id))
+      setReportDeleted(deletedReport)
 
+      // Automatically close delete report popup after 5 seconds
+      setTimeout(closeDeleteReportPopup, 5000)
+    }
+
+    const handleInitialReports = (initialReports: Report[]) => {
+      setReports((prevState) => [...(prevState ?? []), ...initialReports])
+    }
+
+    socket.on('createReport', handleCreateReport)
+    socket.on('updateReport', handleUpdateReport)
+    socket.on('deleteReport', handleDeleteReport)
+    socket.on('reports', handleInitialReports)
+
+    // Cleanup on component unmount
     return () => {
-      socket.off('newReport')
-      socket.off('updateReport')
-      socket.off('deleteReport')
-      socket.off('reports')
+      socket.off('createReport', handleCreateReport)
+      socket.off('updateReport', handleUpdateReport)
+      socket.off('deleteReport', handleDeleteReport)
+      socket.off('reports', handleInitialReports)
     }
   }, [socket])
 
@@ -94,5 +102,16 @@ export const useReports = () => {
     })
   }
 
-  return { reports, setReports, getReports, getNextPage, isLoading, isLoadingNexPage }
+  const closeDeleteReportPopup = () => setReportDeleted(undefined)
+
+  return {
+    reports,
+    setReports,
+    getReports,
+    getNextPage,
+    isLoading,
+    isLoadingNexPage,
+    reportDeleted,
+    closeDeleteReportPopup,
+  }
 }
