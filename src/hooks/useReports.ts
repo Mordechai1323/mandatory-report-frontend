@@ -17,12 +17,14 @@ export const useReports = () => {
 
   React.useEffect(() => {
     socket.on('createReport', (report: Report) => {
+      if (!report.id) return
       setReports((prevReports) => {
         return [report, ...(prevReports ?? [])]
       })
     })
 
     socket.on('updateReport', (updateReport: Report) => {
+      if (!updateReport.id) return
       setReports((prevReports) => {
         const updateReports = prevReports?.map((report) =>
           report.id === updateReport.id ? updateReport : report
@@ -33,6 +35,7 @@ export const useReports = () => {
     })
 
     socket.on('deleteReport', (reportId: number) => {
+      if (!reportId) return
       setReports((prevReports) => {
         return prevReports?.filter((report) => report.id !== reportId)
       })
