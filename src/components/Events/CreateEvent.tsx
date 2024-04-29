@@ -91,7 +91,10 @@ export const CreateEvent = ({ closeEventPopup, setEventPopupType }: CreateEventP
       <BottomContainer>
         <BackButton>
           <Button button={{ type: 'button', onClick: () => setEventPopupType('chooseEvent') }}>
-            חזור
+            <div className="back">
+              <span>{'<'}</span>
+              <span>חזור</span>
+            </div>
           </Button>
         </BackButton>
         <SubmitButton>
@@ -119,21 +122,31 @@ const CreateEventStyle = styled.form`
 const BottomContainer = styled.div`
   margin-top: 8rem;
   width: 100%;
+  height: 8%;
   display: flex;
   justify-content: space-between;
-  height: 2.5rem;
+  
+  & .back {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    
+    & span {
+      color: ${({ theme }) => theme.colors.primary} ;
+      margin-right: 0.5rem;
+    }
+  }
 `
 const BackButton = styled.div`
-  width: 15%;
-  background: ${({ theme }) => theme.colors.primary};
-  border: 1px solid black;
-  border-radius: 6px;
+  color: ${({ theme }) => theme.colors.primary};
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
 `
 
 const SubmitButton = styled.div`
   width: 15%;
-  background: black;
-  color: ${({ theme }) => theme.colors.primary};
-  border: 1px solid black;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
 `

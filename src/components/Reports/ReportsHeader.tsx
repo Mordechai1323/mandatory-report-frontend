@@ -23,8 +23,6 @@ const ReportsHeaderStyle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  border: 0 0.063rem 0.063rem 0.063rem solid ${({ theme }) => theme.colors.border};
   border-radius: 0 0.063rem 0.063rem 0.063rem;
 
   & .report-type-style-start {

@@ -1,10 +1,20 @@
 import styled from 'styled-components'
 
+import lamdanLogo from '../../assets/lamdanLogo.svg'
+
 export const Logo = () => {
-  return <LogoStyle>Logo</LogoStyle>
+  return (
+    <LogoStyle>
+      <img src={lamdanLogo} alt="lamdan logo" />
+    </LogoStyle>
+  )
 }
 
 const LogoStyle = styled.div`
-  font-size: 1.5rem;
-  font-weight: normal;
+  height: 100%;
+  width: 11%;
+  & img {
+    width: 100%;
+    height: 100%;
+  }
 `

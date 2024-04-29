@@ -4,9 +4,8 @@ import styled from 'styled-components'
 import { socket } from '../../socket'
 import { useEvent } from '../../hooks/useEvent'
 import { ReportFormPopup } from './ReportFormPopup'
-import { Event } from '../../components/Events/Event'
-import { ReportsTable } from '../../components/Reports/ReportsTable'
 import { useAddReport } from '../../hooks/useAddReport'
+import { ReportsTable } from '../../components/Reports/ReportsTable'
 
 export const Home = () => {
   const { isAddReportPopupOpen , closeAddReportPopup} = useAddReport()
@@ -22,7 +21,6 @@ export const Home = () => {
 
   return (
     <HomeStyle>
-      <Event />
       {event && (
         <>
           <ReportsTable />

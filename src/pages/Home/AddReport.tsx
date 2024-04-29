@@ -20,9 +20,9 @@ const AddReportStyled = styled.div`
   color: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
   cursor: pointer;
-
-  & img {
-    width: 100%;
-    height: 100%;
+  
+  & button{
+    font-size: 1.1rem;
+    font-weight: 100;
   }
 `

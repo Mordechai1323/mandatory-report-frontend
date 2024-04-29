@@ -27,8 +27,9 @@ const ModalOverlay = styled.div`
 `
 
 const ModalContainer = styled.div<{ $style: ModalStyle }>`
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.white};
   padding: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
   width: ${({ $style }) => $style?.width || 'auto'};
   height: ${({ $style }) => $style?.height || 'auto'};

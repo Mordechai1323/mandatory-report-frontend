@@ -12,14 +12,12 @@ export const Header = () => {
     <HeaderStyle>
       <div className="header-center">
         <div className="right-container">
+          <Logo />
           <Link to="/">
-            <Logo />
             <h1>דיווחי חובה</h1>
           </Link>
         </div>
-
         <Event />
-
         <div className="left-container">
           <Navbar />
           <div className="user">
@@ -38,7 +36,9 @@ const HeaderStyle = styled.div`
   height: 8vh;
   display: flex;
   justify-content: center;
-  
+  box-shadow: 0px 0px 20px 0px #0000000d;
+  background-color: ${({ theme }) => theme.colors.white};
+
   & .header-center {
     width: 90%;
     height: 100%;
@@ -47,7 +47,9 @@ const HeaderStyle = styled.div`
     justify-content: space-between;
     & .right-container {
       width: 33%;
-      justify-content: space-between;
+      height: 75%;
+      display: flex;
+      align-items: center;
 
       & a {
         display: flex;

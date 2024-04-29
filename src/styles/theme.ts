@@ -6,35 +6,41 @@ declare module 'styled-components' {
 
 interface Theme {
   colors: {
-    background: string
+    white: string
     primary: string
     secondary: string
+    error: string
+    gray: string
     border: string
     text: string
     important: string
   }
 }
 
-const lightTheme: Theme = {
+const emergencyTheme: Theme = {
   colors: {
-    background: '#FCFCFC',
-    primary: '#FFFFFF',
-    secondary: '#F4F4F4',
+    white: '#FFFFFF',
+    primary: '#9E1010',
+    secondary: '#FFF8F8',
+    error: '#EE0004',
+    gray: '#797979',
     border: '#DEDEDE',
     text: 'black',
     important: '#D30000',
   },
 }
 
-const darkTheme: Theme = {
+const trainingTheme: Theme = {
   colors: {
-    background: '#FCFCFC',
-    primary: '#FFFFFF',
-    secondary: '#F4F4F4',
+    white: '#FFFFFF',
+    primary: '#0D1E75',
+    secondary: '#F9FAFF',
+    error: '#EE0004',
+    gray: '#797979',
     border: '#DEDEDE',
     text: 'black',
     important: '#D30000',
   },
 }
 
-export { darkTheme, lightTheme }
+export { trainingTheme, emergencyTheme }

@@ -8,7 +8,6 @@ import { socket } from '../../socket'
 import { useAreas } from '../../hooks/useAreas'
 import { Modal } from '../../components/UI/Modal'
 import { Input } from '../../components/UI/Input'
-import { Alert } from '../../components/UI/Alert'
 import { Button } from '../../components/UI/Button'
 import { AddReportSelect } from './AddReportSelect'
 import { useDepartments } from '../../hooks/useDepartments'
@@ -94,7 +93,7 @@ export const ReportFormPopup = ({
     >
       {!departments || !areas || !reportsTypes ? (
         <Loading />
-      ) : popupType === 'form' ? (
+      ) : (
         <ReportFormPopupStyle onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="center">
             <Input
@@ -104,7 +103,6 @@ export const ReportFormPopup = ({
                 ...register('content'),
                 id: 'content',
               }}
-              style={{ marginTop: '2.5rem' }}
               errMessage={errors.content?.message}
             />
             <AddReportSelect
@@ -160,7 +158,7 @@ export const ReportFormPopup = ({
                 ...register('isImportant'),
               }}
               style={{
-                marginTop: '2rem',
+                marginTop: '2.5rem',
                 border: 'black',
                 display: 'flex',
                 padding: '0',
@@ -173,7 +171,7 @@ export const ReportFormPopup = ({
 
             <BottomContainer>
               <BackButton>
-                <Button button={{ type: 'button', onClick: handleClose }}>חזור</Button>
+                <Button button={{ type: 'button', onClick: handleClose }}>{`< חזור`}</Button>
               </BackButton>
               <SubmitButton>
                 <Button button={{ type: 'submit', disabled: isLoading }}>
@@ -183,10 +181,6 @@ export const ReportFormPopup = ({
             </BottomContainer>
           </div>
         </ReportFormPopupStyle>
-      ) : popupType === 'success' ? (
-        <Alert message="הדיווח נוסף בהצלחה!" type="success" />
-      ) : (
-        <Alert message="הייתה בעיה בהוספת הדיווח, אנא נסה שנית" type="error" />
       )}
     </Modal>
   )
@@ -214,15 +208,21 @@ const BottomContainer = styled.div`
 `
 const BackButton = styled.div`
   width: 15%;
-  background: ${({ theme }) => theme.colors.primary};
-  border: 1px solid black;
-  border-radius: 6px;
+
+  & button{
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: 1.2rem;
+    font-weight: 100;
+  }
 `
 
 const SubmitButton = styled.div`
   width: 15%;
-  background: black;
-  color: ${({ theme }) => theme.colors.primary};
-  border: 1px solid black;
+  background: ${({ theme }) => theme.colors.primary};
   border-radius: 6px;
+  
+  & button{
+    color: ${({ theme }) => theme.colors.white};
+    font-size: 1rem;
+  }
 `
