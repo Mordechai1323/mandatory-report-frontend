@@ -13,6 +13,7 @@ import { AddReportSelect } from './AddReportSelect'
 import { useDepartments } from '../../hooks/useDepartments'
 import { useReportsTypes } from '../../hooks/useReportsTypes'
 import { Report, ReportForm, reportSchema } from '../../models/report'
+import { CenterContainer } from '../../components/UI/CenterContainer'
 
 interface ReportFormPopupProps {
   isOpen: boolean
@@ -31,7 +32,6 @@ export const ReportFormPopup = ({
 }: ReportFormPopupProps) => {
   const isEdit = !!report
   const [isLoading, setIsLoading] = React.useState(false)
-  const [popupType, setPopupType] = React.useState<'form' | 'success' | 'error'>('form')
   const {
     register,
     handleSubmit,
@@ -69,16 +69,7 @@ export const ReportFormPopup = ({
       socket.on('createReport', (report: Report) => {
         if (report.id) {
           setIsLoading(false)
-          setPopupType('success')
-          setTimeout(() => {
-            handleClose()
-          }, 2000)
-        } else {
-          setIsLoading(false)
-          setPopupType('error')
-          setTimeout(() => {
-            handleClose()
-          }, 2000)
+          handleClose()
         }
       })
     }
@@ -88,14 +79,14 @@ export const ReportFormPopup = ({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title={popupType === 'form' ? title : ''}
+      title={title}
       style={{ width: '32.8vw', height: '73vh' }}
     >
       {!departments || !areas || !reportsTypes ? (
         <Loading />
       ) : (
         <ReportFormPopupStyle onSubmit={handleSubmit(onSubmitHandler)}>
-          <div className="center">
+          <CenterContainer style={{ height: '90%', marginRight: '5%' }}>
             <Input
               label="תוכן הדיווח"
               input={{
@@ -179,7 +170,7 @@ export const ReportFormPopup = ({
                 </Button>
               </SubmitButton>
             </BottomContainer>
-          </div>
+          </CenterContainer>
         </ReportFormPopupStyle>
       )}
     </Modal>
@@ -193,35 +184,34 @@ const ReportFormPopupStyle = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  & .center {
-    width: 90%;
-    height: 90%;
-  }
 `
 const BottomContainer = styled.div`
   margin-top: 5rem;
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   height: 2.5rem;
 `
 const BackButton = styled.div`
   width: 15%;
 
-  & button{
+  & button {
     color: ${({ theme }) => theme.colors.primary};
     font-size: 1.2rem;
     font-weight: 100;
+    display: flex;
+    align-items: center;
   }
 `
 
 const SubmitButton = styled.div`
   width: 15%;
+  height: 100%;
   background: ${({ theme }) => theme.colors.primary};
   border-radius: 6px;
-  
-  & button{
+
+  & button {
     color: ${({ theme }) => theme.colors.white};
     font-size: 1rem;
   }

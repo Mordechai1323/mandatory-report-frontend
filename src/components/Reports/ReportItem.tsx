@@ -18,6 +18,7 @@ export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
     const deleteReportHandler = (report: Report) => {
       socket.emit('deleteReport', report)
     }
+    
 
     const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
 
@@ -74,6 +75,7 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
   border-radius: 0.375rem;
   overflow: hidden;
   margin: 0.5rem 0;
+  overflow-wrap: anywhere;
 
   & .report-type-style-start {
     width: 0.5%;
@@ -100,6 +102,7 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
     width: 45.5%;
     color: ${({ $isImportant, theme }) =>
       $isImportant ? theme.colors.important : theme.colors.text};
+      padding: 0 0.5rem;
   }
   & .report-type {
     width: 10%;
