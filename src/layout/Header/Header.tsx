@@ -6,11 +6,14 @@ import { Navbar } from './Navbar'
 import UserIcon from '../../assets/icons/user.svg'
 import { AddReport } from '../../pages/Home/AddReport'
 import { Event } from '../../components/Events/Event'
+import { CenterContainer } from '../../components/UI/CenterContainer'
 
 export const Header = () => {
   return (
     <HeaderStyle>
-      <div className="header-center">
+      <CenterContainer
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+      >
         <div className="right-container">
           <Logo />
           <Link to="/">
@@ -26,7 +29,7 @@ export const Header = () => {
           </div>
           <AddReport />
         </div>
-      </div>
+      </CenterContainer>
     </HeaderStyle>
   )
 }
@@ -39,43 +42,36 @@ const HeaderStyle = styled.div`
   box-shadow: 0px 0px 20px 0px #0000000d;
   background-color: ${({ theme }) => theme.colors.white};
 
-  & .header-center {
-    width: 90%;
-    height: 100%;
+  & .right-container {
+    width: 33%;
+    height: 75%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    & .right-container {
-      width: 33%;
-      height: 75%;
-      display: flex;
-      align-items: center;
 
-      & a {
-        display: flex;
-        & h1 {
-          font-weight: 200;
-          font-size: 1.5rem;
-          margin: 0 1rem;
-        }
+    & a {
+      display: flex;
+      & h1 {
+        font-weight: 200;
+        font-size: 1.5rem;
+        margin: 0 1rem;
       }
     }
+  }
 
-    & .left-container {
-      width: 33%;
-      height: 50%;
+  & .left-container {
+    width: 33%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+
+    & .user {
       display: flex;
-      align-items: center;
-      justify-content: end;
+      align-items: end;
+      width: 23%;
 
-      & .user {
-        display: flex;
-        align-items: end;
-        width: 23%;
-
-        & img {
-          margin-right: 0.5rem;
-        }
+      & img {
+        margin-right: 0.5rem;
       }
     }
   }

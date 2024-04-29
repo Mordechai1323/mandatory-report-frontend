@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 
+import { CenterContainer } from '../../components/UI/CenterContainer'
+
 export const Footer = () => {
   return (
     <FooterStyle>
-      <div className="power-by">
-        <span>פותח ע״י צוות Nexus בלמד״ן</span>
-      </div>
+      <CenterContainer style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className="power-by">
+          <span>האתר פותח ע”י מדור יישומים בלמד”ן</span>
+        </div>
 
-      <div className="contact-info">
-        <span>צור קשר: </span>
-        <span>054-1234567</span>
-      </div>
+        <div className="contact-info">
+        <span>ליציאת קשר - 123-5678 | 123-4567</span>
+        </div>
+      </CenterContainer>
     </FooterStyle>
   )
 }
@@ -18,8 +21,7 @@ export const Footer = () => {
 const FooterStyle = styled.div`
   width: 100%;
   height: 4vh;
-  padding: 0 1.5rem;
   display: flex;
-  justify-content: space-between;
-  font-size: 1.5rem;
+  justify-content: center;
+  font-size: 1.2rem;
 `
