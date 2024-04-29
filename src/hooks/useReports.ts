@@ -13,7 +13,7 @@ export const useReports = () => {
 
   const { event } = useEvent()
 
-  const perPage = 15
+  const perPage = 10
 
   React.useEffect(() => {
     socket.on('createReport', (report: Report) => {

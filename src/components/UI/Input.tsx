@@ -34,7 +34,7 @@ export function Input({ label, input, icon, style, errMessage }: InputProps) {
   )
 }
 
-const InputStyle = styled.div<{ $style: InputStyle }>`
+const InputStyle = styled.div<{ $style: InputStyle}>`
   margin-top: ${({ $style }) => $style?.marginTop || '0'};
   display: ${({ $style }) => $style?.display || 'block'};
   align-items: ${({ $style }) => $style?.alignItems || 'center'};
@@ -58,7 +58,7 @@ const InputStyle = styled.div<{ $style: InputStyle }>`
       border: 1px solid ${({ theme, $style }) => $style?.border || theme.colors.border};
       border-radius: 6px;
       padding: ${({ $style }) => $style?.padding || '0.5rem'};
-      width: 92%;
+      width: 95%;
 
       & input {
         width: ${({ $style }) => $style?.width || '100%'};

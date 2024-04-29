@@ -41,9 +41,9 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
         const isCurrent = eventType === type
         return (
           <EventTypeContainer
+            $isCurrent={isCurrent}
             key={type}
             onClick={() => setEventType(type)}
-            style={{ borderBottomColor: isCurrent ? 'black' : '' }}
           >
             {type}
           </EventTypeContainer>
@@ -90,10 +90,11 @@ const ChooseEventTypeStyle = styled.div`
   width: 100%;
   direction: rtl;
 `
-const EventTypeContainer = styled.div`
+const EventTypeContainer = styled.div<{ $isCurrent: boolean }>`
   width: 50%;
   text-align: center;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid
+    ${({ theme, $isCurrent }) => ($isCurrent ? theme.colors.primary : theme.colors.border)};
   padding-bottom: 0.6rem;
   cursor: pointer;
 `

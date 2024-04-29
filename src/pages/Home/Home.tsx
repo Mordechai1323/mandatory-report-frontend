@@ -2,14 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { socket } from '../../socket'
-import { AddReport } from './AddReport'
 import { useEvent } from '../../hooks/useEvent'
 import { ReportFormPopup } from './ReportFormPopup'
-import { Event } from '../../components/Events/Event'
+import { useAddReport } from '../../hooks/useAddReport'
 import { ReportsTable } from '../../components/Reports/ReportsTable'
 
 export const Home = () => {
-  const [isAddReportPopupOpen, setIsAddReportPopupOpen] = React.useState(false)
+  const { isAddReportPopupOpen , closeAddReportPopup} = useAddReport()
   const { event } = useEvent()
 
   React.useEffect(() => {
@@ -22,15 +21,13 @@ export const Home = () => {
 
   return (
     <HomeStyle>
-      <Event />
       {event && (
         <>
           <ReportsTable />
-          <AddReport openAddReportPopup={() => setIsAddReportPopupOpen(true)} />
           {isAddReportPopupOpen && (
             <ReportFormPopup
               isOpen={isAddReportPopupOpen}
-              handleClose={() => setIsAddReportPopupOpen(false)}
+              handleClose={closeAddReportPopup}
               title="הוספת דיווח"
               eventId={event.id}
             />

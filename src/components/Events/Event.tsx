@@ -30,31 +30,22 @@ export const Event = () => {
   const formatInHebrew = date.format('MMMM YY')
 
   return (
-    <EventStyle>
-      <div className="center" ref={targetRef}>
-        <EventDetails onClick={() => setIsEventPopupOpen((prev) => !prev)}>
-          {event ? <h2>{`${event.name} - ${formatInHebrew}`}</h2> : <h2>בחר אירוע</h2>}
-          <img src={changeEventIcon} alt="change event" />
-        </EventDetails>
-        {isEventPopupOpen && <EventPopup closeEventPopup={() => setIsEventPopupOpen(false)} />}
-      </div>
+    <EventStyle ref={targetRef}>
+      <EventDetails onClick={() => setIsEventPopupOpen((prev) => !prev)}>
+        {event ? <h2>{`${event.name} - ${formatInHebrew}`}</h2> : <h2>בחר אירוע</h2>}
+        <img src={changeEventIcon} alt="change event" />
+      </EventDetails>
+      {isEventPopupOpen && <EventPopup closeEventPopup={() => setIsEventPopupOpen(false)} />}
     </EventStyle>
   )
 }
 
 const EventStyle = styled.div`
-  width: 100%;
+  width: 33%;
   display: flex;
   justify-content: center;
-
-  & .center {
-    width: 90%;
-    display: flex;
-    justify-content: center;
-    border-bottom: 1px solid #f2f2f2;
-    padding-bottom: 1rem;
-    position: relative;
-  }
+  align-items: center;
+  position: relative;
 `
 const EventDetails = styled.div`
   display: flex;
@@ -66,5 +57,6 @@ const EventDetails = styled.div`
   }
   & h2 {
     cursor: pointer;
+    font-size: 1.4rem;
   }
 `

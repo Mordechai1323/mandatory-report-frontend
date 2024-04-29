@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-export const ReportsHeader = () => {
+export const ReportsTableHeader = () => {
   return (
-    <ReportsHeaderStyle>
+    <ReportsTableHeaderStyle>
       <div className="report-type-style-start"></div>
       <div className="id">מס’ הדיווח</div>
       <div className="department">מכלול מדווח</div>
@@ -13,18 +13,16 @@ export const ReportsHeader = () => {
       <div className="report-type">מהות הדיווח</div>
       <div className="delete-or-edit"></div>
       <div className="report-type-style-end"></div>
-    </ReportsHeaderStyle>
+    </ReportsTableHeaderStyle>
   )
 }
 
-const ReportsHeaderStyle = styled.div`
+const ReportsTableHeaderStyle = styled.div`
   width: 100%;
-  height: 3.75rem;
+  height: 10%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  border: 0 0.063rem 0.063rem 0.063rem solid ${({ theme }) => theme.colors.border};
   border-radius: 0 0.063rem 0.063rem 0.063rem;
 
   & .report-type-style-start {

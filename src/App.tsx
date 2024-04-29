@@ -1,19 +1,18 @@
-import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
 import { Layout } from './layout/Layout'
 import { PAGES } from './constants/pages'
-import { Themes } from './types/general'
+import { useEvent } from './hooks/useEvent'
 import { PageNotFound } from './pages/PageNotFound'
 import { GlobalStyles } from './styles/GlobalStyles'
-import { darkTheme, lightTheme } from './styles/theme'
+import { emergencyTheme, trainingTheme } from './styles/theme'
 
 function App() {
-  const [theme, setTheme] = useState<Themes>('light')
+  const { event } = useEvent()
 
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <ThemeProvider theme={event?.isTraining ? trainingTheme : emergencyTheme}>
       <GlobalStyles />
       <Routes>
         <Route path="/" element={<Layout />}>

@@ -4,6 +4,7 @@ import SegoeUIWoff from '../assets/fonts/SegoeUI.woff'
 import SegoeUIWoff2 from '../assets/fonts/SegoeUI.woff2'
 import SegoeUIBoldWoff from '../assets/fonts/SegoeUI-Bold.woff'
 import SegoeUIBoldWoff2 from '../assets/fonts/SegoeUI-Bold.woff2'
+import backgroundImage from '../assets/backgroundImage.jpeg'
 
 export const GlobalStyles = createGlobalStyle`
 
@@ -32,7 +33,8 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     body {
-        background-color: ${(props) => props.theme.colors.background};
+        background-image: url(${backgroundImage});
+        background-size: cover;
         font-family: 'Segoe UI', sans-serif;
         direction: rtl;
     }

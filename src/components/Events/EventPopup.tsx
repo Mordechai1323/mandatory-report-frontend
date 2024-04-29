@@ -26,7 +26,7 @@ export const EventPopup = ({ closeEventPopup }: EventPopupProps) => {
 const EventPopupStyle = styled.div`
   width: 41rem;
   height: 30rem;
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.white};
   position: absolute;
   top: 4rem;
   border-radius: 6px;

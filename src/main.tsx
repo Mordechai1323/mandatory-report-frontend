@@ -6,25 +6,28 @@ import App from './App.tsx'
 import { EventProvider } from './context/EventProvider.tsx'
 import { AreasProvider } from './context/AreasProvider.tsx'
 import { AllEventsProvider } from './context/AllEventsProvider.tsx'
+import { AddReportProvider } from './context/AddReportProvider.tsx'
 import { DepartmentsProvider } from './context/DepartmentsProvider.tsx'
 import { ReportsTypesProvider } from './context/ReportsTypesProvider.tsx'
 
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <EventProvider>
-          <AllEventsProvider>
-            <DepartmentsProvider>
-              <AreasProvider>
-                <ReportsTypesProvider>
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <EventProvider>
+        <AllEventsProvider>
+          <DepartmentsProvider>
+            <AreasProvider>
+              <ReportsTypesProvider>
+                <AddReportProvider>
                   <App />
-                </ReportsTypesProvider>
-              </AreasProvider>
-            </DepartmentsProvider>
-          </AllEventsProvider>
-        </EventProvider>
-      </QueryClientProvider>
-    </BrowserRouter>
+                </AddReportProvider>
+              </ReportsTypesProvider>
+            </AreasProvider>
+          </DepartmentsProvider>
+        </AllEventsProvider>
+      </EventProvider>
+    </QueryClientProvider>
+  </BrowserRouter>
 )
