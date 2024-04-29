@@ -75,5 +75,9 @@ export const GlobalStyles = createGlobalStyle`
     border-radius: 6px;
   }
 
+  & .Toastify__toast-body{
+    text-align: end;
+  }
+
 
 `
