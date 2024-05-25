@@ -8,7 +8,7 @@ import { useAllEvents } from '../../hooks/useAllEvents'
 import { EventType, eventsTypes } from '../../constants/events'
 
 interface AllEventsProps {
-  closeChooseEventPopup: () => void
+  closeEventPopup: () => void
 }
 
 interface ChooseEventTypeProps {
@@ -19,21 +19,17 @@ interface ChooseEventTypeProps {
 interface EventsProps {
   allEvents: Event[] | undefined
   eventType: EventType
-  closeChooseEventPopup: () => void
+  closeEventPopup: () => void
 }
 
-export const AllEvents = ({ closeChooseEventPopup }: AllEventsProps) => {
+export const AllEvents = ({ closeEventPopup }: AllEventsProps) => {
   const { allEvents } = useAllEvents()
   const [eventType, setEventType] = React.useState<EventType>('חירום')
 
   return (
     <AllEventsStyle>
       <ChooseEventType eventType={eventType} setEventType={setEventType} />
-      <Events
-        allEvents={allEvents}
-        eventType={eventType}
-        closeChooseEventPopup={closeChooseEventPopup}
-      />
+      <Events allEvents={allEvents} eventType={eventType} closeEventPopup={closeEventPopup} />
     </AllEventsStyle>
   )
 }
@@ -45,10 +41,9 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
         const isCurrent = eventType === type
         return (
           <EventTypeContainer
+            $isCurrent={isCurrent}
             key={type}
             onClick={() => setEventType(type)}
-            className="event-type"
-            style={{ borderBottomColor: isCurrent ? 'black' : '' }}
           >
             {type}
           </EventTypeContainer>
@@ -58,7 +53,7 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
   )
 }
 
-const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) => {
+const Events = ({ allEvents, eventType, closeEventPopup }: EventsProps) => {
   const { event, changeEvent } = useEvent()
   const filteredData = React.useMemo(
     () => allEvents?.filter((ele) => (eventType === 'תרגיל' ? ele.isTraining : !ele.isTraining)),
@@ -68,11 +63,11 @@ const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) =>
   const changeEventHandler = (newEvent: Event) => {
     if (event) socket.emit('leaveRoom', event.id)
     changeEvent(newEvent)
-    closeChooseEventPopup()
+    closeEventPopup()
   }
 
   return (
-    <EventsContainer className="events">
+    <EventsContainer>
       {filteredData?.map((event) => (
         <EventItem key={event.id} onClick={() => changeEventHandler(event)}>
           {event.name}
@@ -84,36 +79,28 @@ const Events = ({ allEvents, eventType, closeChooseEventPopup }: EventsProps) =>
 
 const AllEventsStyle = styled.div`
   width: 100%;
+  height: 88%;
   overflow: auto;
+  direction: ltr;
   padding-right: 2rem;
   margin-top: 2rem;
-
-  & .choose-event-type {
-    display: flex;
-    width: 100%;
-
-    & .event-type {
-      width: 50%;
-      text-align: center;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-      padding-bottom: 0.6rem;
-      cursor: pointer;
-    }
-  }
 `
 const ChooseEventTypeStyle = styled.div`
   display: flex;
   width: 100%;
+  direction: rtl;
 `
-const EventTypeContainer = styled.div`
+const EventTypeContainer = styled.div<{ $isCurrent: boolean }>`
   width: 50%;
   text-align: center;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid
+    ${({ theme, $isCurrent }) => ($isCurrent ? theme.colors.primary : theme.colors.border)};
   padding-bottom: 0.6rem;
   cursor: pointer;
 `
 const EventsContainer = styled.div`
   width: 100%;
+  direction: rtl;
 `
 const EventItem = styled.div`
   text-align: start;

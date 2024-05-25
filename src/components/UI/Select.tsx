@@ -63,7 +63,7 @@ const SelectStyle = styled.div<{ $style: SelectStyle }>`
       border: 1px solid ${({ theme }) => theme.colors.border};
       border-radius: 6px;
       padding: 0.5rem;
-      width: 92%;
+      width: 95%;
 
       & select {
         width: ${({ $style }) => $style?.width || '100%'};

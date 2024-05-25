@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 
@@ -9,46 +10,54 @@ import editIcon from '../../assets/icons/edit.svg'
 interface ReportItemProps {
   report: Report
   editReportHandler: (report: Report) => void
+  ref?: (element: HTMLDivElement) => void
 }
 
-export const ReportItem = ({ report, editReportHandler }: ReportItemProps) => {
-  const deleteReportHandler = (report: Report) => {
-    socket.emit('deleteReport', report)
+export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
+  ({ report, editReportHandler }, ref) => {
+    const deleteReportHandler = (report: Report) => {
+      socket.emit('deleteReport', report)
+    }
+    
+
+    const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
+
+    return (
+      <ReportItemStyle
+        $isImportant={report.isImportant}
+        $reportTypeStyle={report.reportType.style}
+        ref={ref}
+      >
+        <div className="report-type-style-start"></div>
+        <div className="id">{report.id}</div>
+        <div className="department">
+          {report.department.name} - {report.department.phone}
+        </div>
+        <div className="date">{moment(report.createdAt).format('DD/MM/YY')}</div>
+        <div className="hour">{moment(report.createdAt).format('HH:mm')}</div>
+        <div className="area">{report.area.name}</div>
+        <div className="content">
+          {`${
+            report.createdAt !== report.updatedAt
+              ? `נערך  ${moment(report.updatedAt).format('HH:mm')} -`
+              : ''
+          } ${report.content}`}
+        </div>
+        <div className="report-type">{report.reportType.name}</div>
+        <div className="delete-or-edit">
+          <img
+            src={editIcon}
+            alt="edit"
+            onClick={() => editReportHandler(report)}
+            style={{ visibility: isPassed15Minutes ? 'hidden' : 'visible' }}
+          />
+          <img src={deleteIcon} alt="delete" onClick={() => deleteReportHandler(report)} />
+        </div>
+        <div className="report-type-style-end"></div>
+      </ReportItemStyle>
+    )
   }
-
-  const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
-
-  return (
-    <ReportItemStyle $isImportant={report.isImportant} $reportTypeStyle={report.reportType.style}>
-      <div className="report-type-style-start"></div>
-      <div className="id">{report.id}</div>
-      <div className="department">
-        {report.department.name} - {report.department.phone}
-      </div>
-      <div className="date">{moment(report.createdAt).format('DD/MM/YY')}</div>
-      <div className="hour">{moment(report.createdAt).format('HH:mm')}</div>
-      <div className="area">{report.area.name}</div>
-      <div className="content">
-        {`${
-          report.createdAt !== report.updatedAt
-            ? `נערך  ${moment(report.updatedAt).format('HH:mm')} -`
-            : ''
-        } ${report.content}`}
-      </div>
-      <div className="report-type">{report.reportType.name}</div>
-      <div className="delete-or-edit">
-        <img
-          src={editIcon}
-          alt="edit"
-          onClick={() => editReportHandler(report)}
-          style={{ visibility: isPassed15Minutes ? 'hidden' : 'visible' }}
-        />
-        <img src={deleteIcon} alt="delete" onClick={() => deleteReportHandler(report)} />
-      </div>
-      <div className="report-type-style-end"></div>
-    </ReportItemStyle>
-  )
-}
+)
 
 type HomeStyleProps = {
   $isImportant: boolean
@@ -61,11 +70,12 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 0.375rem;
   overflow: hidden;
   margin: 0.5rem 0;
+  overflow-wrap: anywhere;
 
   & .report-type-style-start {
     width: 0.5%;
@@ -92,6 +102,7 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
     width: 45.5%;
     color: ${({ $isImportant, theme }) =>
       $isImportant ? theme.colors.important : theme.colors.text};
+      padding: 0 0.5rem;
   }
   & .report-type {
     width: 10%;

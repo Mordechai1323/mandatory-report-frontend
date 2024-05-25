@@ -1,60 +1,117 @@
 import React from 'react'
-import { useEvent } from './useEvent'
+
 import { socket } from '../socket'
+import { useEvent } from './useEvent'
 import { Report } from '../models/report'
 
 export const useReports = () => {
   const [reports, setReports] = React.useState<Report[]>()
+  const [, setPage] = React.useState(1)
+  const [countPages, setCountPages] = React.useState(0)
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [isLoadingNexPage, setIsLoadingNexPage] = React.useState(false)
+  const [reportDeleted, setReportDeleted] = React.useState<Report>()
+
   const { event } = useEvent()
 
+  const perPage = 10
+
   React.useEffect(() => {
-    socket.on('createReport', (report: Report) => {
-      setReports((prevReports) => {
-        return [report, ...(prevReports ?? [])]
-      })
-    })
+    const handleCreateReport = (newReport: Report) => {
+      if (!newReport.id) return
 
-    socket.on('updateReport', (updateReport: Report) => {
+      setReports((prevReports) => [newReport, ...(prevReports ?? [])])
+    }
+
+    const handleUpdateReport = (updatedReport: Report) => {
+      if (!updatedReport.id) return
+
       setReports((prevReports) => {
-        const updateReports = prevReports?.map((report) =>
-          report.id === updateReport.id ? updateReport : report
+        return prevReports?.map((report) =>
+          report.id === updatedReport.id ? updatedReport : report
         )
-
-        return updateReports
       })
-    })
+    }
 
-    socket.on('deleteReport', (reportId: number) => {
-      setReports((prevReports) => {
-        return prevReports?.filter((report) => report.id !== reportId)
-      })
-    })
+    const handleDeleteReport = (deletedReport: Report) => {
+      if (!deletedReport.id) return
 
+      setReports((prevReports) => prevReports?.filter((report) => report.id !== deletedReport.id))
+      setReportDeleted(deletedReport)
+
+      // Automatically close delete report popup after 5 seconds
+      setTimeout(closeDeleteReportPopup, 5000)
+    }
+
+    const handleInitialReports = (initialReports: Report[]) => {
+      setReports((prevState) => [...(prevState ?? []), ...initialReports])
+    }
+
+    socket.on('createReport', handleCreateReport)
+    socket.on('updateReport', handleUpdateReport)
+    socket.on('deleteReport', handleDeleteReport)
+    socket.on('reports', handleInitialReports)
+
+    // Cleanup on component unmount
     return () => {
-      socket.off('newReport')
-      socket.off('updateReport')
-      socket.off('deleteReport')
+      socket.off('createReport', handleCreateReport)
+      socket.off('updateReport', handleUpdateReport)
+      socket.off('deleteReport', handleDeleteReport)
+      socket.off('reports', handleInitialReports)
     }
   }, [socket])
 
   React.useEffect(() => {
+    setReports(undefined)
+    setPage(1)
+    setIsLoading(true)
     if (event) {
       socket.emit('joinRoom', event.id)
-      socket.on('joinedRoomSuccessfully', (res) => {
+      socket.on('joinedRoomSuccessfully', async (res) => {
         if (res === `Joined to room ${event.id} successfully`) {
-          socket.emit('getReports', { eventId: event.id, page: 1 })
-          socket.on('reports', (reports: Report[]) => {
-            setReports(reports)
-          })
+          getReports()
+          setIsLoading(false)
         }
+      })
+      socket.on('reportsCount', (count: number) => {
+        setCountPages(Math.ceil(count / perPage))
       })
     }
 
     return () => {
       socket.off('joinedRoomSuccessfully')
-      socket.off('reports')
+      socket.off('reportsCount')
     }
   }, [event])
 
-  return { reports, setReports }
+  const getReports = (page = 1) => {
+    if (!event) return
+    socket.emit('getReports', { eventId: event.id, page, perPage })
+  }
+
+  const getNextPage = () => {
+    if (!event) return
+    setPage((prevPage) => {
+      if (prevPage === countPages) return prevPage
+      setIsLoadingNexPage(true)
+      const nextPage = prevPage + 1
+      getReports(nextPage)
+      setIsLoadingNexPage(false)
+
+      return nextPage
+    })
+  }
+
+  const closeDeleteReportPopup = () => setReportDeleted(undefined)
+
+  return {
+    reports,
+    setReports,
+    getReports,
+    getNextPage,
+    isLoading,
+    isLoadingNexPage,
+    reportDeleted,
+    closeDeleteReportPopup,
+  }
 }

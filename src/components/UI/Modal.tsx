@@ -4,9 +4,9 @@ import styled from 'styled-components'
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  title: string
+  title?: string
   children: React.ReactNode
-  style: ModalStyle
+  style?: ModalStyle
 }
 
 type ModalStyle = {
@@ -27,8 +27,9 @@ const ModalOverlay = styled.div`
 `
 
 const ModalContainer = styled.div<{ $style: ModalStyle }>`
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.white};
   padding: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
   width: ${({ $style }) => $style?.width || 'auto'};
   height: ${({ $style }) => $style?.height || 'auto'};
@@ -55,10 +56,12 @@ export const Modal = ({ isOpen, onClose, title, children, style }: ModalProps) =
 
   return (
     <ModalOverlay onClick={handleOverlayClick}>
-      <ModalContainer $style={style}>
-        <ModalHeader>
-          <h2>{title}</h2>
-        </ModalHeader>
+      <ModalContainer $style={style ?? {}}>
+        {title && (
+          <ModalHeader>
+            <h2>{title}</h2>
+          </ModalHeader>
+        )}
         <ModalContent>{children}</ModalContent>
       </ModalContainer>
     </ModalOverlay>
