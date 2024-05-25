@@ -1,34 +1,31 @@
-export type filterOption = {
-  value: string
-  label: string
-  filterType: 'select' | 'checkbox'
-  options: string[]
+import { FilterData } from '../pages/Home/FiltersAndTabs/Filters/types'
+
+const filterByTimeOptions = [
+  { label: 'כל ההודעות', value: '' },
+  { label: '12 שעות אחרונות', value: '12h' },
+  { label: 'יום אחורה', value: '1d' },
+  { label: 'יומיים אחורה', value: '2d' },
+  { label: 'שלושה ימים אחורה', value: '3d' },
+  { label: 'שבוע אחורה', value: '1w' },
+  // { label: 'מותאם אישית', value: 'custom' },
+]
+
+const sortByOptions = [
+  { label: 'שעת הדיווח', value: 'updatedAt' },
+  { label: 'נושא הדיווח', value: 'content' },
+  { label: 'הודעות חשובות', value: 'isImportant' },
+]
+
+export const filterByTime: FilterData = {
+  value: 'time',
+  label: 'חלון זמן',
+  filterType: 'select',
+  options: filterByTimeOptions,
 }
 
-export const filtersOptions: filterOption[] = [
-  {
-    value: 'time',
-    label: 'חלון זמן',
-    filterType: 'select',
-    options: ['12 שעות אחרונות', 'יום אחורה', 'יומיים אחורה'],
-  },
-  {
-    value: 'sort by',
-    label: 'מיון לפי',
-    filterType: 'select',
-    options: ['שעת הדיווח', 'נושא הדיווח', 'הודעות חשובות'],
-  },
-  { value: 'area', label: 'זירה', filterType: 'checkbox', options: ['עזה', 'לבנון', 'סוריה'] },
-  {
-    value: 'department',
-    label: 'מכלול מדווח',
-    filterType: 'checkbox',
-    options: ['מכלול 1', 'מכלול 2', 'מכלול 3'],
-  },
-  {
-    value: 'reportType',
-    label: 'מהות הדיווח',
-    filterType: 'checkbox',
-    options: ['דיווח מודיעיני', 'איסוף', 'מל”מ ומטרות'],
-  },
-]
+export const sortBy: FilterData = {
+  value: 'sortBy',
+  label: 'מיון לפי',
+  filterType: 'select',
+  options: sortByOptions,
+}
