@@ -28,7 +28,7 @@ export const ReportsTable = () => {
 
 const ReportsTableStyle = styled.div`
   width: 100%;
-  height: 90%;
+  height: 93%;
   display: flex;
   justify-content: center;
   background-color: ${({ theme }) => theme.colors.white + '66'};
