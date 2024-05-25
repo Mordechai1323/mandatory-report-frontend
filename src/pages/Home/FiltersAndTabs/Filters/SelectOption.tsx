@@ -1,15 +1,18 @@
 import styled from 'styled-components'
 
+import { FilterOption } from './types'
+
 interface SelectOptionProps {
-  value: string
+  option: FilterOption
   isSelected: boolean
+  onClickHandler: (option: FilterOption) => void
 }
 
-export const SelectOption = ({ isSelected, value }: SelectOptionProps) => {
+export const SelectOption = ({ isSelected, option, onClickHandler }: SelectOptionProps) => {
   return (
-    <SelectOptionStyle $isSelected={isSelected}>
+    <SelectOptionStyle $isSelected={isSelected} onClick={() => onClickHandler(option)}>
       <div className="border"></div>
-      <span>{value}</span>
+      <span>{option.label}</span>
     </SelectOptionStyle>
   )
 }
