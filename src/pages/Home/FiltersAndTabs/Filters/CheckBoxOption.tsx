@@ -1,15 +1,23 @@
 import styled from 'styled-components'
 
+import { FilterOption } from './types'
+
 interface CheckBoxOptionProps {
-  value: string
+  option: FilterOption
   isChecked: boolean
+  onClickHandler: (option: FilterOption) => void
 }
 
-export const CheckBoxOption = ({ isChecked, value }: CheckBoxOptionProps) => {
+export const CheckBoxOption = ({ isChecked, option, onClickHandler }: CheckBoxOptionProps) => {
   return (
     <CheckBoxOptionStyle $isChecked={isChecked}>
-      <input type="checkbox" id="filterCheckbox" checked={isChecked} />
-      <label htmlFor="filterCheckbox">{value}</label>
+      <input
+        type="checkbox"
+        id={option.label}
+        checked={isChecked}
+        onChange={() => onClickHandler(option)}
+      />
+      <label htmlFor={option.label}>{option.label}</label>
     </CheckBoxOptionStyle>
   )
 }
@@ -30,6 +38,7 @@ const CheckBoxOptionStyle = styled.div<{ $isChecked: boolean }>`
     color: ${({ theme, $isChecked }) => ($isChecked ? theme.colors.primary : theme.colors.gray)};
     margin-right: 8px;
     cursor: pointer;
+    width: 88%;
   }
 
   &:hover {
