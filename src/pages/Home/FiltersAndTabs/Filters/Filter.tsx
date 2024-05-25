@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { FilterData } from './types'
 import { FilterPopup } from './FilterPopup'
 import openFilter from '../../../../assets/icons/openFilter.svg'
-import { filterOption } from '../../../../constants/filtersOptions'
 import { useClickOutSide } from '../../../../hooks/useClickOutSide'
 
 interface FilterProps {
-  filter: filterOption
+  filter: FilterData
 }
 
 export const Filter = ({ filter }: FilterProps) => {
