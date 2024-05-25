@@ -2,22 +2,51 @@ import styled from 'styled-components'
 
 import { SelectOption } from './SelectOption'
 import { CheckBoxOption } from './CheckBoxOption'
-import { filterOption } from '../../../../constants/filtersOptions'
+import { FilterData, FilterOption } from './types'
+import { useFilters } from '../../../../hooks/useFilters'
 
 interface FilterPopupProps {
-  filter: filterOption
+  filter: FilterData
 }
 
 export const FilterPopup = ({ filter }: FilterPopupProps) => {
+  const { changeFilter, filters } = useFilters()
+
+  const onClickHandler = (option: FilterOption) => {
+    changeFilter(filter.value, option)
+  }
+
+  const isCurrent = (options: FilterOption) => {
+    if (filter.value === 'time') {
+      return filters.time.label === options.label
+    } else if (filter.value === 'sortBy') {
+      return filters.sortBy.label === options.label
+    } else {
+      return filters[filter.value].includes(options.value as number)
+    }
+  }
+
   return (
     <FilterPopupStyle>
-      {filter.options.map((option, i) =>
-        filter.filterType === 'select' ? (
-          <SelectOption key={option} value={option} isSelected={i === 0} />
-        ) : (
-          <CheckBoxOption key={option} value={option} isChecked={i === 1}/>
-        )
-      )}
+      {!filter.options
+        ? 'טוען נתונים...'
+        : filter.options.map((option) =>
+            filter.filterType === 'select' ? (
+              <SelectOption
+                key={option.label}
+                option={option}
+                onClickHandler={onClickHandler}
+                isSelected={isCurrent(option)}
+              />
+            ) : (
+              <CheckBoxOption
+                key={option.label}
+                option={option}
+                onClickHandler={onClickHandler}
+                isChecked={isCurrent(option)}
+              />
+            )
+          )}
     </FilterPopupStyle>
   )
 }
