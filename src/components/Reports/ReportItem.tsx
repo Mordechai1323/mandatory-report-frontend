@@ -70,7 +70,6 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 0.375rem;
   overflow: hidden;
