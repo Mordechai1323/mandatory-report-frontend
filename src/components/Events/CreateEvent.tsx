@@ -1,16 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { EventPopupType } from './EventPopup'
 import { Input } from '../UI/Input'
-import { EventType, eventsTypes } from '../../constants/events'
-import { Select } from '../UI/Select'
-import { EventForm, eventSchema } from '../../models/event'
 import { Button } from '../UI/Button'
+import { Select } from '../UI/Select'
+import { EventPopupType } from './EventPopup'
 import { createEvent } from '../../api/events'
+import { EventForm, eventSchema } from '../../models/event'
+import { EventType, eventsTypes } from '../../constants/events'
+import { useMutationCustom } from '../../hooks/useMutationCustom'
 
 interface CreateEventProps {
   closeEventPopup: () => void
@@ -28,14 +28,16 @@ export const CreateEvent = ({ closeEventPopup, setEventPopupType }: CreateEventP
   } = useForm<EventForm>({
     resolver: zodResolver(eventSchema),
   })
-  const queryClient = useQueryClient()
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutationCustom({
+    queryKey: ['events'],
     mutationFn: (data: EventForm) => createEvent(data),
-    onSuccess: () => {
+    updateQueryData(updateData, queryData) {
+      return queryData ? [...queryData, updateData] : [updateData]
+    },
+    onSuccessFunction: () => {
       setIsLoading(false)
       closeEventPopup()
-      queryClient.invalidateQueries({ queryKey: ['events'] })
     },
   })
 
@@ -125,14 +127,14 @@ const BottomContainer = styled.div`
   height: 8%;
   display: flex;
   justify-content: space-between;
-  
+
   & .back {
     display: flex;
     align-items: center;
     font-size: 1.2rem;
-    
+
     & span {
-      color: ${({ theme }) => theme.colors.primary} ;
+      color: ${({ theme }) => theme.colors.primary};
       margin-right: 0.5rem;
     }
   }
