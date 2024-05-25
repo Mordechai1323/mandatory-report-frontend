@@ -3,34 +3,22 @@ import React from 'react'
 import 'moment/dist/locale/he'
 import styled from 'styled-components'
 
-import { useEvent } from '../../hooks/useEvent'
-import changeEventIcon from '../../assets/icons/changeEvent.svg'
 import { EventPopup } from './EventPopup'
+import { useEvent } from '../../hooks/useEvent'
+import { useClickOutSide } from '../../hooks/useClickOutSide'
+import changeEventIcon from '../../assets/icons/changeEvent.svg'
 
 export const Event = () => {
   const { event } = useEvent()
   const [isEventPopupOpen, setIsEventPopupOpen] = React.useState(false)
-  const targetRef = React.useRef<HTMLDivElement>(null)
-
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (targetRef.current && !targetRef.current.contains(event.target as Node)) {
-        setIsEventPopupOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+  const { ref } = useClickOutSide<HTMLDivElement>(() => setIsEventPopupOpen(false))
 
   moment.locale('he')
   const date = moment(event?.createdAt)
   const formatInHebrew = date.format('MMMM YY')
 
   return (
-    <EventStyle ref={targetRef}>
+    <EventStyle ref={ref}>
       <EventDetails onClick={() => setIsEventPopupOpen((prev) => !prev)}>
         {event ? <h2>{`${event.name} - ${formatInHebrew}`}</h2> : <h2>בחר אירוע</h2>}
         <img src={changeEventIcon} alt="change event" />
