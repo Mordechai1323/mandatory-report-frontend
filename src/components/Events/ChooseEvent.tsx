@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 
 import { Input } from '../UI/Input'
@@ -12,12 +13,18 @@ interface ChooseEventProps {
 }
 
 export const ChooseEvent = ({ closeEventPopup, setEventPopupType }: ChooseEventProps) => {
+  const [searchEvent, setSearchEvent] = React.useState('')
+
   return (
     <ChooseEventStyle>
       <TopContainer>
         <SearchContainer>
           <Input
-            input={{ placeholder: 'חיפוש' }}
+            input={{
+              placeholder: 'חיפוש',
+              onChange: (e) => setSearchEvent(e.target.value),
+              autoFocus: true,
+            }}
             icon={searchIcon}
             style={{ marginTopInputContainer: '0' }}
           />
@@ -29,7 +36,7 @@ export const ChooseEvent = ({ closeEventPopup, setEventPopupType }: ChooseEventP
         </AddEventContainer>
       </TopContainer>
 
-      <AllEvents closeEventPopup={closeEventPopup} />
+      <AllEvents closeEventPopup={closeEventPopup} searchEvent={searchEvent} />
     </ChooseEventStyle>
   )
 }
