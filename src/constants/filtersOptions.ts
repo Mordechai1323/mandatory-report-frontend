@@ -10,11 +10,6 @@ const filterByTimeOptions = [
   // { label: 'מותאם אישית', value: 'custom' },
 ]
 
-const sortByOptions = [
-  { label: 'שעת הדיווח', value: 'updatedAt' },
-  { label: 'נושא הדיווח', value: 'content' },
-  { label: 'הודעות חשובות', value: 'isImportant' },
-]
 
 export const filterByTime: FilterData = {
   value: 'time',
@@ -23,9 +18,3 @@ export const filterByTime: FilterData = {
   options: filterByTimeOptions,
 }
 
-export const sortBy: FilterData = {
-  value: 'sortBy',
-  label: 'מיון לפי',
-  filterType: 'select',
-  options: sortByOptions,
-}

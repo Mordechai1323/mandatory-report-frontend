@@ -9,7 +9,6 @@ import {
 
 const initialFilter: Filters = {
   time: { label: 'כל ההודעות', value: { from: '', to: '' } },
-  sortBy: { label: 'שעת הדיווח', value: 'updatedAt' },
   area: [],
   department: [],
   reportType: [],
@@ -28,11 +27,12 @@ const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
       if (filterType === 'time') {
         const value = parseInt((filterOption.value as string).slice(0, -1), 10)
         const unit = (filterOption.value as string).slice(-1)
-        
+
         const from =
           filterOption.value !== '12h'
             ? moment()
-                .subtract(value, unit as DurationInputArg2).startOf('day')
+                .subtract(value, unit as DurationInputArg2)
+                .startOf('day')
                 .toISOString()
             : moment()
                 .subtract(value, unit as DurationInputArg2)
@@ -46,14 +46,6 @@ const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
               filterOption.value === ''
                 ? { from: '', to: '' }
                 : { from, to: moment().toISOString() },
-          },
-        }
-      } else if (filterType === 'sortBy') {
-        return {
-          ...prev,
-          sortBy: {
-            label: filterOption.label,
-            value: filterOption.value!,
           },
         }
       } else {

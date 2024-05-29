@@ -4,7 +4,7 @@ import { Filter } from './Filter'
 import { useAreas } from '../../../../hooks/useAreas'
 import { useDepartments } from '../../../../hooks/useDepartments'
 import { useReportsTypes } from '../../../../hooks/useReportsTypes'
-import { filterByTime, sortBy } from '../../../../constants/filtersOptions'
+import { filterByTime } from '../../../../constants/filtersOptions'
 
 export const Filters = () => {
   const { areas } = useAreas()
@@ -14,7 +14,6 @@ export const Filters = () => {
   return (
     <FiltersStyle>
       <Filter filter={filterByTime} />
-      <Filter filter={sortBy} />
       <Filter
         filter={{
           value: 'area',
@@ -53,7 +52,7 @@ export const Filters = () => {
 }
 
 const FiltersStyle = styled.div`
-  width: 40%;
+  width: 35%;
   height: 50%;
   display: flex;
   justify-content: space-between;

@@ -5,6 +5,7 @@ import { FilterData } from './types'
 import { FilterPopup } from './FilterPopup'
 import openFilter from '../../../../assets/icons/openFilter.svg'
 import { useClickOutSide } from '../../../../hooks/useClickOutSide'
+import { useFilters } from '../../../../hooks/useFilters'
 
 interface FilterProps {
   filter: FilterData
@@ -12,8 +13,15 @@ interface FilterProps {
 
 export const Filter = ({ filter }: FilterProps) => {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = React.useState(false)
+  const { filters } = useFilters()
 
   const { ref } = useClickOutSide<HTMLDivElement>(() => setIsFilterPopupOpen(false))
+
+  const filterLabel = () => {
+    if (filter.value === 'time') {
+      return filters.time.label !== 'כל ההודעות' ? filters.time.label : filter.label
+    } 
+  }
 
   return (
     <FilterStyle ref={ref}>
@@ -21,7 +29,7 @@ export const Filter = ({ filter }: FilterProps) => {
         <span>{filter.label}</span>
         <img src={openFilter} alt="open filter icon" />
       </FilterDetails>
-      {isFilterPopupOpen && <FilterPopup filter={filter}  />}
+      {isFilterPopupOpen && <FilterPopup filter={filter} />}
     </FilterStyle>
   )
 }

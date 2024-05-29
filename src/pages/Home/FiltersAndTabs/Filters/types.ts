@@ -1,6 +1,5 @@
 export type Filters = {
     time: FilterTime
-    sortBy: FilterOption
     area: number[]
     department: number[]
     reportType: number[]
