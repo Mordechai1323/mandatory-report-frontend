@@ -1,9 +1,12 @@
+import React from 'react'
 import styled from 'styled-components'
 
 import { Input } from '../UI/Input'
 import { Button } from '../UI/Button'
 import { AllEvents } from './AllEvents'
+import { Roles } from '../../types/auth'
 import { EventPopupType } from './EventPopup'
+import { useAuth } from '../../hooks/useAuth'
 import searchIcon from '../../assets/icons/search.svg'
 
 interface ChooseEventProps {
@@ -12,24 +15,35 @@ interface ChooseEventProps {
 }
 
 export const ChooseEvent = ({ closeEventPopup, setEventPopupType }: ChooseEventProps) => {
+  const [searchEvent, setSearchEvent] = React.useState('')
+  const { auth } = useAuth()
+
+  const isAdmin = auth?.role === Roles.Admin
+
   return (
     <ChooseEventStyle>
       <TopContainer>
-        <SearchContainer>
+        <SearchContainer $isAdmin={isAdmin}>
           <Input
-            input={{ placeholder: 'חיפוש' }}
+            input={{
+              placeholder: 'חיפוש',
+              onChange: (e) => setSearchEvent(e.target.value),
+              autoFocus: true,
+            }}
             icon={searchIcon}
-            style={{ marginTopInputContainer: '0' }}
+            style={{ marginTopInputContainer: '0', widthContainer: '100%' }}
           />
         </SearchContainer>
-        <AddEventContainer>
-          <Button button={{ onClick: () => setEventPopupType('createEvent') }}>
-            + הוספת אירוע
-          </Button>
-        </AddEventContainer>
+        {isAdmin && (
+          <AddEventContainer>
+            <Button button={{ onClick: () => setEventPopupType('createEvent') }}>
+              + הוספת אירוע
+            </Button>
+          </AddEventContainer>
+        )}
       </TopContainer>
 
-      <AllEvents closeEventPopup={closeEventPopup} />
+      <AllEvents closeEventPopup={closeEventPopup} searchEvent={searchEvent} />
     </ChooseEventStyle>
   )
 }
@@ -45,8 +59,8 @@ const TopContainer = styled.div`
   align-items: center;
   height: 8%;
 `
-const SearchContainer = styled.div`
-  width: 70%;
+const SearchContainer = styled.div<{ $isAdmin: boolean }>`
+  width: ${({ $isAdmin }) => ($isAdmin ? '70%' : '100%')};
 `
 
 const AddEventContainer = styled.div`

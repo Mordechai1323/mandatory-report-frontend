@@ -1,6 +1,6 @@
 import { Department } from '../models/department'
 import { handlerError } from '../utils/handlerError'
-import { axiosPrivate } from './api'
+import { axiosPrivate } from './axios'
 
 const fetchDepartments = async () => {
   try {

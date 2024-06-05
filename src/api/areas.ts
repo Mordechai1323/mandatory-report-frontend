@@ -1,4 +1,4 @@
-import { axiosPrivate } from './api'
+import { axiosPrivate } from './axios'
 import { Area } from '../models/area'
 import { handlerError } from '../utils/handlerError'
 

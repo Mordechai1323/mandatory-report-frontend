@@ -3,6 +3,7 @@ import React from 'react'
 import { socket } from '../socket'
 import { useEvent } from './useEvent'
 import { Report } from '../models/report'
+import { useNotifications } from './useNotifications'
 
 export const useReports = () => {
   const [reports, setReports] = React.useState<Report[]>()
@@ -10,7 +11,7 @@ export const useReports = () => {
   const [countPages, setCountPages] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isLoadingNexPage, setIsLoadingNexPage] = React.useState(false)
-  const [reportDeleted, setReportDeleted] = React.useState<Report>()
+  const { isMuted, addNotification } = useNotifications()
 
   const { event } = useEvent()
 
@@ -21,6 +22,8 @@ export const useReports = () => {
       if (!newReport.id) return
 
       setReports((prevReports) => [newReport, ...(prevReports ?? [])])
+      if (!isMuted /* check if  report.createdBy  !== auth.uniqID*/)
+        addNotification({ report: newReport, type: 'newReport' })
     }
 
     const handleUpdateReport = (updatedReport: Report) => {
@@ -37,10 +40,7 @@ export const useReports = () => {
       if (!deletedReport.id) return
 
       setReports((prevReports) => prevReports?.filter((report) => report.id !== deletedReport.id))
-      setReportDeleted(deletedReport)
-
-      // Automatically close delete report popup after 5 seconds
-      setTimeout(closeDeleteReportPopup, 5000)
+      addNotification({ report: deletedReport, type: 'deleteReport' })
     }
 
     const handleInitialReports = (initialReports: Report[]) => {
@@ -59,7 +59,7 @@ export const useReports = () => {
       socket.off('deleteReport', handleDeleteReport)
       socket.off('reports', handleInitialReports)
     }
-  }, [socket])
+  }, [addNotification, isMuted, socket])
 
   React.useEffect(() => {
     setReports(undefined)
@@ -102,8 +102,6 @@ export const useReports = () => {
     })
   }
 
-  const closeDeleteReportPopup = () => setReportDeleted(undefined)
-
   return {
     reports,
     setReports,
@@ -111,7 +109,5 @@ export const useReports = () => {
     getNextPage,
     isLoading,
     isLoadingNexPage,
-    reportDeleted,
-    closeDeleteReportPopup,
   }
 }

@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom'
 
 import { Logo } from './Logo'
 import { Navbar } from './Navbar'
+import { useAuth } from '../../hooks/useAuth'
 import UserIcon from '../../assets/icons/user.svg'
-import { AddReport } from '../../pages/Home/AddReport'
 import { Event } from '../../components/Events/Event'
+import { AddReport } from '../../pages/Home/AddReport'
 import { CenterContainer } from '../../components/UI/CenterContainer'
 
 export const Header = () => {
+  const { auth } = useAuth()
+
   return (
     <HeaderStyle>
       <CenterContainer
@@ -24,7 +27,7 @@ export const Header = () => {
         <div className="left-container">
           <Navbar />
           <div className="user">
-            <span>username</span>
+            <span>{auth?.name}</span>
             <img src={UserIcon} alt="user icon" />
           </div>
           <AddReport />
@@ -68,7 +71,16 @@ const HeaderStyle = styled.div`
     & .user {
       display: flex;
       align-items: end;
-      width: 23%;
+      justify-content: flex-end;
+      margin-left: 2%;
+      max-width: 23%;
+
+      & span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
 
       & img {
         margin-right: 0.5rem;
