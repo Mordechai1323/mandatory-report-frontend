@@ -98,7 +98,7 @@ export const ReportFormPopup = ({
       isOpen={isOpen}
       onClose={handleClose}
       title={title}
-      style={{ width: '32.8vw', height: '73vh' }}
+      style={{ width: '38rem', height: '40rem' }}
     >
       {!departments || !areas || !reportsTypes ? (
         <Loading />

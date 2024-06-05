@@ -2,10 +2,15 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import { PAGES } from '../../constants/pages'
+import notificationsOn from '../../assets/icons/notificationsOn.svg'
+import { useNotifications } from '../../hooks/useNotifications'
 
 export const Navbar = () => {
+  const { toggleMuteNotifications } = useNotifications()
   return (
     <NavbarStyle>
+      <img onClick={toggleMuteNotifications} src={notificationsOn} alt={'notifications on'} />
+
       {PAGES.map((page) => {
         if (page.isDisplayNavbar) {
           return (
@@ -26,5 +31,9 @@ const NavbarStyle = styled.div`
   margin-left: 0.5rem;
   a {
     margin: 0 0.5rem;
+  }
+
+  & img {
+    cursor: pointer;
   }
 `

@@ -46,5 +46,6 @@ const EventDetails = styled.div`
   & h2 {
     cursor: pointer;
     font-size: 1.4rem;
+    text-align: center;
   }
 `

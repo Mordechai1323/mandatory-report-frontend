@@ -74,12 +74,14 @@ const HeaderStyle = styled.div`
       justify-content: flex-end;
       margin-left: 2%;
       max-width: 23%;
+       width: 7rem;
 
       & span {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
 
       & img {
         margin-right: 0.5rem;
