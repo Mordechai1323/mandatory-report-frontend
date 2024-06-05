@@ -10,7 +10,7 @@ interface FilterPopupProps {
 }
 
 export const FilterPopup = ({ filter }: FilterPopupProps) => {
-  const { changeFilter, filters } = useFilters()
+  const { changeFilter, filters, clearFilter } = useFilters()
 
   const onClickHandler = (option: FilterOption) => {
     changeFilter(filter.value, option)
@@ -19,8 +19,6 @@ export const FilterPopup = ({ filter }: FilterPopupProps) => {
   const isCurrent = (options: FilterOption) => {
     if (filter.value === 'time') {
       return filters.time.label === options.label
-    } else if (filter.value === 'sortBy') {
-      return filters.sortBy.label === options.label
     } else {
       return filters[filter.value].includes(options.value as number)
     }
@@ -47,6 +45,7 @@ export const FilterPopup = ({ filter }: FilterPopupProps) => {
               />
             )
           )}
+      <ClearFilterStyle onClick={() => clearFilter(filter.value)}>נקה סינון</ClearFilterStyle>
     </FilterPopupStyle>
   )
 }
@@ -61,4 +60,14 @@ const FilterPopupStyle = styled.div`
   border-radius: 6px;
   padding: 1vh 0.5vw;
   z-index: 1;
+`
+const ClearFilterStyle = styled.div`
+  display: flex;
+  align-items: center;
+  height: 3vh;
+  width: 100%;
+  cursor: pointer;
+  border-top: 1px solid #0000001a;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 0.9rem;
 `

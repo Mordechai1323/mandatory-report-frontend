@@ -13,6 +13,7 @@ export type Filters = {
  export type FiltersContextType = {
     filters: Filters
     changeFilter: (filterType: keyof Filters, filter: FilterOption) => void
+    clearFilter: (filterType: keyof Filters) => void
   }
 
   export type FilterData = {

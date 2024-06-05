@@ -17,6 +17,7 @@ const initialFilter: Filters = {
 const FiltersContext = React.createContext<FiltersContextType>({
   filters: initialFilter,
   changeFilter: () => {},
+  clearFilter: () => {},
 })
 
 const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -63,8 +64,26 @@ const FiltersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
       }
     })
   }
+  const clearFilter = (filterType: keyof Filters) => {
+    setFilters((prev) => {
+      if (filterType === 'time') {
+        return {
+          ...prev,
+          time: {
+            label: 'כל ההודעות',
+            value: { from: '', to: '' },
+          },
+        }
+      } else {
+        return {
+          ...prev,
+          [filterType]: [],
+        }
+      }
+    })
+  }
   return (
-    <FiltersContext.Provider value={{ filters, changeFilter }}>{children}</FiltersContext.Provider>
+    <FiltersContext.Provider value={{ filters, changeFilter , clearFilter }}>{children}</FiltersContext.Provider>
   )
 }
 
