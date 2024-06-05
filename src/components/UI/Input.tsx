@@ -12,7 +12,7 @@ interface InputProps {
 }
 
 type InputStyle =
-  | (React.CSSProperties & { marginTopInputContainer?: string; paddingLabel?: string })
+  | (React.CSSProperties & { marginTopInputContainer?: string; paddingLabel?: string, widthContainer?: string })
   | undefined
 
 export function Input({ label, input, icon, style, errMessage }: InputProps) {
@@ -58,7 +58,7 @@ const InputStyle = styled.div<{ $style: InputStyle}>`
       border: 1px solid ${({ theme, $style }) => $style?.border || theme.colors.border};
       border-radius: 6px;
       padding: ${({ $style }) => $style?.padding || '0.5rem'};
-      width: 95%;
+      width: ${({ $style }) => $style?.widthContainer || '95%'};
 
       & input {
         width: ${({ $style }) => $style?.width || '100%'};

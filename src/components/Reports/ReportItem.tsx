@@ -6,6 +6,7 @@ import { socket } from '../../socket'
 import { Report } from '../../models/report'
 import deleteIcon from '../../assets/icons/delete.svg'
 import editIcon from '../../assets/icons/edit.svg'
+import { useAuth } from '../../hooks/useAuth'
 
 interface ReportItemProps {
   report: Report
@@ -15,11 +16,13 @@ interface ReportItemProps {
 
 export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
   ({ report, editReportHandler }, ref) => {
+    const { auth } = useAuth()
     const deleteReportHandler = (report: Report) => {
       socket.emit('deleteReport', report)
     }
 
     const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
+    const isCurrentUser = report.createdBy === auth?.uniqueID
 
     return (
       <ReportItemStyle
@@ -48,9 +51,17 @@ export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
             src={editIcon}
             alt="edit"
             onClick={() => editReportHandler(report)}
-            style={{ visibility: isPassed15Minutes ? 'hidden' : 'visible' }}
+            style={{
+              visibility: !isPassed15Minutes && isCurrentUser ? 'visible' : 'hidden',
+            }}
           />
-          <img src={deleteIcon} alt="delete" onClick={() => deleteReportHandler(report)} />
+
+          <img
+            src={deleteIcon}
+            alt="delete"
+            onClick={() => deleteReportHandler(report)}
+            style={{ visibility: isCurrentUser ? 'visible' : 'hidden' }}
+          />
         </div>
         <div className="report-type-style-end"></div>
       </ReportItemStyle>
