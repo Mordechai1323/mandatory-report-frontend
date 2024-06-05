@@ -4,23 +4,20 @@ import { useIntersection } from '@mantine/hooks'
 
 import { ReportItem } from './ReportItem'
 import { Report } from '../../models/report'
+import { ReportAlert } from './ReportAlert'
 import { Loading } from '../../pages/Loading'
 import { useReports } from '../../hooks/useReports'
-import { ReportDeleted } from './ReportDeleted'
+import { useNotifications } from '../../hooks/useNotifications'
 
 interface ReportsTableBodyProps {
   editReportHandler: (report: Report) => void
 }
 
 export const ReportsTableBody = ({ editReportHandler }: ReportsTableBodyProps) => {
-  const {
-    reports,
-    getNextPage,
-    isLoading,
-    isLoadingNexPage,
-    reportDeleted,
-    closeDeleteReportPopup,
-  } = useReports()
+  const { reports, getNextPage, isLoading, isLoadingNexPage } = useReports()
+  const { getNextNotification, removeNotification } = useNotifications()
+
+  const notification = getNextNotification()
 
   const lastReportRef = React.useRef<HTMLDivElement>()
   const { ref, entry } = useIntersection({
@@ -47,11 +44,12 @@ export const ReportsTableBody = ({ editReportHandler }: ReportsTableBodyProps) =
         )
       })}
       {isLoadingNexPage && <Loading />}
-      {reportDeleted && (
-        <ReportDeleted
-          isOpen={!!reportDeleted}
-          report={reportDeleted}
-          onClose={closeDeleteReportPopup}
+      {notification != null && (
+        <ReportAlert
+          key={notification.report.id}
+          isOpen={notification !== null}
+          notification={notification}
+          onClose={removeNotification}
         />
       )}
     </ReportsTableBodyStyle>
