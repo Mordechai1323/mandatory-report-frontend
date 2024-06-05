@@ -5,10 +5,11 @@ import { socket } from '../../socket'
 import { useEvent } from '../../hooks/useEvent'
 import { ReportFormPopup } from './ReportFormPopup'
 import { useAddReport } from '../../hooks/useAddReport'
+import { NavigationAndFilters } from './NavigationAndFilters/NavigationAndFilters'
 import { ReportsTable } from '../../components/Reports/ReportsTable'
 
 export const Home = () => {
-  const { isAddReportPopupOpen , closeAddReportPopup} = useAddReport()
+  const { isAddReportPopupOpen, closeAddReportPopup } = useAddReport()
   const { event } = useEvent()
 
   React.useEffect(() => {
@@ -21,6 +22,7 @@ export const Home = () => {
 
   return (
     <HomeStyle>
+      <NavigationAndFilters />
       {event && (
         <>
           <ReportsTable />
@@ -43,5 +45,4 @@ const HomeStyle = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `

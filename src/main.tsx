@@ -9,6 +9,7 @@ import { AllEventsProvider } from './context/AllEventsProvider.tsx'
 import { AddReportProvider } from './context/AddReportProvider.tsx'
 import { DepartmentsProvider } from './context/DepartmentsProvider.tsx'
 import { ReportsTypesProvider } from './context/ReportsTypesProvider.tsx'
+import { FiltersProvider } from './context/FiltersProvider.tsx'
 
 const queryClient = new QueryClient()
 
@@ -21,7 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <AreasProvider>
               <ReportsTypesProvider>
                 <AddReportProvider>
-                  <App />
+                  <FiltersProvider>
+                    <App />
+                  </FiltersProvider>
                 </AddReportProvider>
               </ReportsTypesProvider>
             </AreasProvider>

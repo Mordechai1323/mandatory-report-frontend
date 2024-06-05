@@ -11,7 +11,7 @@ export const Footer = () => {
         </div>
 
         <div className="contact-info">
-        <span>ליציאת קשר - 123-5678 | 123-4567</span>
+          <span>ליציאת קשר - 123-5678 | 123-4567</span>
         </div>
       </CenterContainer>
     </FooterStyle>
@@ -24,4 +24,5 @@ const FooterStyle = styled.div`
   display: flex;
   justify-content: center;
   font-size: 1.2rem;
+  background-color: ${({ theme }) => theme.colors.white + '66'};
 `
