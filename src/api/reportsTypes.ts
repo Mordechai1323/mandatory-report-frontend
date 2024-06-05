@@ -1,6 +1,6 @@
 import { ReportType } from '../models/reportType'
 import { handlerError } from '../utils/handlerError'
-import { axiosPrivate } from './api'
+import { axiosPrivate } from './axios'
 
 const fetchReportsTypes = async () => {
   try {

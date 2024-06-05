@@ -1,6 +1,6 @@
 import { Event, EventForm } from '../models/event'
 import { handlerError } from '../utils/handlerError'
-import { axiosPrivate } from './api'
+import { axiosPrivate } from './axios'
 
 const fetchEvents = async () => {
   try {
