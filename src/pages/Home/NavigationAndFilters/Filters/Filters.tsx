@@ -52,7 +52,7 @@ export const Filters = () => {
 }
 
 const FiltersStyle = styled.div`
-  width: 35%;
+  width: 42%;
   height: 50%;
   display: flex;
   justify-content: space-between;
