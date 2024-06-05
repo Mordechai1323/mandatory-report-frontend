@@ -5,7 +5,7 @@ import { socket } from '../../socket'
 import { useEvent } from '../../hooks/useEvent'
 import { ReportFormPopup } from './ReportFormPopup'
 import { useAddReport } from '../../hooks/useAddReport'
-import { FiltersAndTabs } from './FiltersAndTabs/FiltersAndTabs'
+import { NavigationAndFilters } from './NavigationAndFilters/NavigationAndFilters'
 import { ReportsTable } from '../../components/Reports/ReportsTable'
 
 export const Home = () => {
@@ -22,7 +22,7 @@ export const Home = () => {
 
   return (
     <HomeStyle>
-      <FiltersAndTabs />
+      <NavigationAndFilters />
       {event && (
         <>
           <ReportsTable />

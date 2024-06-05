@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components'
 
 interface TabProps {
@@ -6,16 +5,16 @@ interface TabProps {
   isCurrentTab: boolean
 }
 
-export const Tabs = () => {
+export const Navigation = () => {
   return (
-    <TabsStyle>
+    <NavigationStyle>
       <Tab  value="כל הדיווחים" isCurrentTab={true} />
       <Tab value="דיווחים חשובים" isCurrentTab={false} />
-    </TabsStyle>
+    </NavigationStyle>
   )
 }
 
-const TabsStyle = styled.div`
+const NavigationStyle = styled.div`
   width: 50%;
   height: 100%;
   display: flex;

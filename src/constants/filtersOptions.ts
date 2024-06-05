@@ -1,4 +1,4 @@
-import { FilterData } from '../pages/Home/FiltersAndTabs/Filters/types'
+import { FilterData } from '../pages/Home/NavigationAndFilters/Filters/types'
 
 const filterByTimeOptions = [
   { label: 'כל ההודעות', value: '' },
@@ -10,11 +10,9 @@ const filterByTimeOptions = [
   // { label: 'מותאם אישית', value: 'custom' },
 ]
 
-
 export const filterByTime: FilterData = {
   value: 'time',
   label: 'חלון זמן',
   filterType: 'select',
   options: filterByTimeOptions,
 }
-

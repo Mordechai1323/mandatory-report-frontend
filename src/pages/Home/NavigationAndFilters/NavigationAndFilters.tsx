@@ -1,23 +1,23 @@
 import styled from 'styled-components'
 
-import { Tabs } from './Tabs/Tabs'
 import { Filters } from './Filters/Filters'
+import { Navigation } from './Navigation/Navigation'
 import { CenterContainer } from '../../../components/UI/CenterContainer'
 
-export const FiltersAndTabs = () => {
+export const NavigationAndFilters = () => {
   return (
-    <FiltersAndTabsStyle>
+    <NavigationAndFiltersStyle>
       <CenterContainer
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
       >
-        <Tabs />
+        <Navigation />
         <Filters />
       </CenterContainer>
-    </FiltersAndTabsStyle>
+    </NavigationAndFiltersStyle>
   )
 }
 
-const FiltersAndTabsStyle = styled.div`
+const NavigationAndFiltersStyle = styled.div`
   width: 100%;
   height: 6%;
   display: flex;

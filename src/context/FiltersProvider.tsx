@@ -5,7 +5,7 @@ import {
   FilterOption,
   Filters,
   FiltersContextType,
-} from '../pages/Home/FiltersAndTabs/Filters/types'
+} from '../pages/Home/NavigationAndFilters/Filters/types'
 
 const initialFilter: Filters = {
   time: { label: 'כל ההודעות', value: { from: '', to: '' } },
