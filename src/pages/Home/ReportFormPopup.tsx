@@ -108,7 +108,7 @@ export const ReportFormPopup = ({
             <Input
               label="תוכן הדיווח"
               input={{
-                placeholder: 'תוכן הדיווח',
+                placeholder: '*תוכן הדיווח מוגבל עד 250 תווים',
                 ...register('content'),
                 id: 'content',
               }}
@@ -202,6 +202,12 @@ const ReportFormPopupStyle = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  & .report-limit {
+    color: ${({ theme }) => theme.colors.gray};
+    font-size: 0.8rem;
+    margin-top: 1rem;
+  }
 `
 const BottomContainer = styled.div`
   margin-top: 5rem;

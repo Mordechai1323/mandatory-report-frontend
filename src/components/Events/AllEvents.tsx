@@ -9,6 +9,7 @@ import { EventType, eventsTypes } from '../../constants/events'
 
 interface AllEventsProps {
   closeEventPopup: () => void
+  searchEvent: string
 }
 
 interface ChooseEventTypeProps {
@@ -20,16 +21,22 @@ interface EventsProps {
   allEvents: Event[] | undefined
   eventType: EventType
   closeEventPopup: () => void
+  searchEvent: string
 }
 
-export const AllEvents = ({ closeEventPopup }: AllEventsProps) => {
+export const AllEvents = ({ closeEventPopup, searchEvent }: AllEventsProps) => {
   const { allEvents } = useAllEvents()
   const [eventType, setEventType] = React.useState<EventType>('חירום')
 
   return (
     <AllEventsStyle>
       <ChooseEventType eventType={eventType} setEventType={setEventType} />
-      <Events allEvents={allEvents} eventType={eventType} closeEventPopup={closeEventPopup} />
+      <Events
+        allEvents={allEvents}
+        eventType={eventType}
+        closeEventPopup={closeEventPopup}
+        searchEvent={searchEvent}
+      />
     </AllEventsStyle>
   )
 }
@@ -40,11 +47,7 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
       {eventsTypes.map((type) => {
         const isCurrent = eventType === type
         return (
-          <EventTypeContainer
-            $isCurrent={isCurrent}
-            key={type}
-            onClick={() => setEventType(type)}
-          >
+          <EventTypeContainer $isCurrent={isCurrent} key={type} onClick={() => setEventType(type)}>
             {type}
           </EventTypeContainer>
         )
@@ -53,12 +56,19 @@ const ChooseEventType = ({ setEventType, eventType }: ChooseEventTypeProps) => {
   )
 }
 
-const Events = ({ allEvents, eventType, closeEventPopup }: EventsProps) => {
+const Events = ({ allEvents, eventType, closeEventPopup, searchEvent }: EventsProps) => {
   const { event, changeEvent } = useEvent()
-  const filteredData = React.useMemo(
-    () => allEvents?.filter((ele) => (eventType === 'תרגיל' ? ele.isTraining : !ele.isTraining)),
-    [eventType, allEvents]
-  )
+  const filteredData = React.useMemo(() => {
+    const isEventTypeTraining = eventType === 'תרגיל';
+  
+    return allEvents?.filter((event) => {
+      const matchesEventType = isEventTypeTraining ? event.isTraining : !event.isTraining;
+      const matchesSearchEvent = searchEvent === '' || event.name.includes(searchEvent);
+  
+      return matchesEventType && matchesSearchEvent;
+    });
+  }, [allEvents, searchEvent, eventType]);
+  
 
   const changeEventHandler = (newEvent: Event) => {
     if (event) socket.emit('leaveRoom', event.id)

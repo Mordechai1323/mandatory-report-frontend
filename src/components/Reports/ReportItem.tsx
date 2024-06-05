@@ -18,7 +18,6 @@ export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
     const deleteReportHandler = (report: Report) => {
       socket.emit('deleteReport', report)
     }
-    
 
     const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
 
@@ -29,22 +28,22 @@ export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
         ref={ref}
       >
         <div className="report-type-style-start"></div>
-        <div className="id">{report.id}</div>
-        <div className="department">
+        <div className="center id">{report.id}</div>
+        <div className="center department">
           {report.department.name} - {report.department.phone}
         </div>
-        <div className="date">{moment(report.createdAt).format('DD/MM/YY')}</div>
-        <div className="hour">{moment(report.createdAt).format('HH:mm')}</div>
-        <div className="area">{report.area.name}</div>
-        <div className="content">
+        <div className="center date">{moment(report.createdAt).format('DD/MM/YY')}</div>
+        <div className="center hour">{moment(report.createdAt).format('HH:mm')}</div>
+        <div className="center area">{report.area.name}</div>
+        <div className="center content">
           {`${
             report.createdAt !== report.updatedAt
               ? `נערך  ${moment(report.updatedAt).format('HH:mm')} -`
               : ''
           } ${report.content}`}
         </div>
-        <div className="report-type">{report.reportType.name}</div>
-        <div className="delete-or-edit">
+        <div className="center report-type">{report.reportType.name}</div>
+        <div className="center delete-or-edit">
           <img
             src={editIcon}
             alt="edit"
@@ -66,9 +65,9 @@ type HomeStyleProps = {
 
 const ReportItemStyle = styled.div<HomeStyleProps>`
   width: 100%;
-  height: 3.75rem;
+  min-height: 3.75rem;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 0.375rem;
@@ -76,9 +75,13 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
   margin: 0.5rem 0;
   overflow-wrap: anywhere;
 
+  & .center {
+    align-self: center;
+  }
+
   & .report-type-style-start {
     width: 0.5%;
-    height: 100%;
+    height: auto;
     background-color: ${({ $reportTypeStyle }) => $reportTypeStyle};
   }
   & .id {
@@ -101,7 +104,7 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
     width: 45.5%;
     color: ${({ $isImportant, theme }) =>
       $isImportant ? theme.colors.important : theme.colors.text};
-      padding: 0 0.5rem;
+    padding: 0.5rem;
   }
   & .report-type {
     width: 10%;
@@ -118,7 +121,7 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
   }
   & .report-type-style-end {
     width: 1%;
-    height: 100%;
+    height: auto;
     background-color: ${({ $reportTypeStyle }) => $reportTypeStyle};
   }
 `
