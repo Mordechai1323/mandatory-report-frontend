@@ -55,6 +55,7 @@ const FilterPopupStyle = styled.div`
   right: 0;
   top: 2rem;
   width: 10vw;
+  min-width: 10rem;
   background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 6px;
