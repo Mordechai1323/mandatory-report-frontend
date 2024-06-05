@@ -6,6 +6,7 @@ import { Roles } from './types/auth'
 import { Layout } from './layout/Layout'
 import { PAGES } from './constants/pages'
 import { useEvent } from './hooks/useEvent'
+import { Unauthorized } from './pages/unauthorized'
 import { PageNotFound } from './pages/PageNotFound'
 import { GlobalStyles } from './styles/GlobalStyles'
 import { RequireAuth } from './components/requireAuth'
@@ -13,7 +14,6 @@ import { PersistLogin } from './components/PersistLogin'
 import { emergencyTheme, trainingTheme } from './styles/theme'
 
 import 'react-toastify/dist/ReactToastify.css'
-import { Unauthorized } from './pages/unauthorized'
 
 function App() {
   const { event } = useEvent()
@@ -25,7 +25,7 @@ function App() {
       <Routes>
         <Route path="*" element={<PageNotFound />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        
+
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={Roles.User} />}>
             <Route path="/" element={<Layout />}>
