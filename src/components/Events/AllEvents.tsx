@@ -92,7 +92,6 @@ const AllEventsStyle = styled.div`
   height: 88%;
   overflow: auto;
   direction: ltr;
-  padding-right: 2rem;
   margin-top: 2rem;
 `
 const ChooseEventTypeStyle = styled.div`
