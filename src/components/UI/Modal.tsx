@@ -28,22 +28,23 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div<{ $style: ModalStyle }>`
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 20px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
   width: ${({ $style }) => $style?.width || 'auto'};
   height: ${({ $style }) => $style?.height || 'auto'};
+  overflow: hidden;
 `
 
 const ModalHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 6%;
+  margin-top: 2%;
 `
 
-const ModalContent = styled.div`
-  padding: 20px 0;
-  height: 100%;
+const ModalContent = styled.div<{ $isHaveTitle: boolean }>`
+  height: ${({ $isHaveTitle }) => ($isHaveTitle ? '92%' : '100%')};
   width: 100%;
 `
 
@@ -62,7 +63,7 @@ export const Modal = ({ isOpen, onClose, title, children, style }: ModalProps) =
             <h2>{title}</h2>
           </ModalHeader>
         )}
-        <ModalContent>{children}</ModalContent>
+        <ModalContent $isHaveTitle={title != undefined}>{children}</ModalContent>
       </ModalContainer>
     </ModalOverlay>
   )
