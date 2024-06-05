@@ -68,7 +68,7 @@ const HeaderStyle = styled.div`
     & .user {
       display: flex;
       align-items: end;
-      width: 23%;
+      width: 7rem;
 
       & img {
         margin-right: 0.5rem;
