@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import { PAGES } from '../../constants/pages'
-import notificationsOn from '../../assets/icons/notificationsOn.svg'
+import notifications from '../../assets/icons/notifications.svg'
 import { useNotifications } from '../../hooks/useNotifications'
 
 export const Navbar = () => {
   const { toggleMuteNotifications } = useNotifications()
   return (
     <NavbarStyle>
-      <img onClick={toggleMuteNotifications} src={notificationsOn} alt={'notifications on'} />
+      <img onClick={toggleMuteNotifications} src={notifications} alt={'notifications on'} />
 
       {PAGES.map((page) => {
         if (page.isDisplayNavbar) {
