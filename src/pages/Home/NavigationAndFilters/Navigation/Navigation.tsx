@@ -28,6 +28,7 @@ const Tab = ({ value, isCurrentTab }: TabProps) => {
 const TabStyle = styled.div<{ $isCurrentTab: boolean }>`
   height: 100%;
   width: 26.5%;
+  min-width: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
