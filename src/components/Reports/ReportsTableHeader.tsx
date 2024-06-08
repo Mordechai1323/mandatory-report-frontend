@@ -55,4 +55,26 @@ const ReportsTableHeaderStyle = styled.div`
   & .report-type-style-end {
     width: 1%;
   }
+
+  @media (max-width: ${({ theme }) => theme.mediaQueries.halfScreen}) {
+    font-size: 0.8rem;
+    & .id {
+      width: 10%;
+    }
+    & .department {
+      width: 10%;
+    }
+    & .date {
+      width: 10%;
+    }
+    & .hour {
+      width: 10%;
+    }
+    & .area {
+      width: 10%;
+    }
+    & .content {
+      width: 40.5%;
+    }
+  }
 `

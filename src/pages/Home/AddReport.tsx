@@ -25,4 +25,10 @@ const AddReportStyled = styled.div`
     font-size: 1.1rem;
     font-weight: 100;
   }
+
+  @media (max-width: ${({ theme }) => theme.mediaQueries.halfScreen}) {
+    & button{
+      font-size: 1rem;
+    }
+  }
 `

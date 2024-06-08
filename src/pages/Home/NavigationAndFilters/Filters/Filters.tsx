@@ -56,4 +56,8 @@ const FiltersStyle = styled.div`
   height: 50%;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: ${({ theme }) => theme.mediaQueries.halfScreen}) {
+    width: 60%;
+  }
 `

@@ -139,4 +139,25 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
     height: auto;
     background-color: ${({ $reportTypeStyle }) => $reportTypeStyle};
   }
+
+  @media (max-width: ${({ theme }) => theme.mediaQueries.halfScreen}) {
+    & .id {
+      width: 10%;
+    }
+    & .department {
+      width: 10%;
+    }
+    & .date {
+      width: 10%;
+    }
+    & .hour {
+      width: 10%;
+    }
+    & .area {
+      width: 10%;
+    }
+    & .content {
+      width: 40.5%;
+    }
+  }
 `
