@@ -70,10 +70,11 @@ const HeaderStyle = styled.div`
 
     & .user {
       display: flex;
-      align-items: end;
+      align-items: center;
       justify-content: flex-end;
       margin-left: 2%;
       max-width: 23%;
+      height: 100%;
 
       & span {
         white-space: nowrap;

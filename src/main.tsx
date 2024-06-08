@@ -12,31 +12,34 @@ import { ReportsTypesProvider } from './context/ReportsTypesProvider.tsx'
 import { FiltersProvider } from './context/FiltersProvider.tsx'
 import { AuthProvider } from './context/AuthProvider.tsx'
 import { NotificationsProvider } from './context/NotificationsProvider.tsx'
+import { AlertProvider } from './context/AlertProvider.tsx'
 
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-     <AuthProvider>
-      <EventProvider>
-        <AllEventsProvider>
-          <DepartmentsProvider>
-            <AreasProvider>
-              <ReportsTypesProvider>
-                <AddReportProvider>
-                  <FiltersProvider>
-                    <NotificationsProvider>
-                      <App />
-                    </NotificationsProvider>
-                  </FiltersProvider>
-                </AddReportProvider>
-              </ReportsTypesProvider>
-            </AreasProvider>
-          </DepartmentsProvider>
-        </AllEventsProvider>
-      </EventProvider>
-     </AuthProvider>
+      <AuthProvider>
+        <EventProvider>
+          <AllEventsProvider>
+            <DepartmentsProvider>
+              <AreasProvider>
+                <ReportsTypesProvider>
+                  <AddReportProvider>
+                    <FiltersProvider>
+                      <NotificationsProvider>
+                        <AlertProvider>
+                          <App />
+                        </AlertProvider>
+                      </NotificationsProvider>
+                    </FiltersProvider>
+                  </AddReportProvider>
+                </ReportsTypesProvider>
+              </AreasProvider>
+            </DepartmentsProvider>
+          </AllEventsProvider>
+        </EventProvider>
+      </AuthProvider>
     </QueryClientProvider>
   </BrowserRouter>
 )

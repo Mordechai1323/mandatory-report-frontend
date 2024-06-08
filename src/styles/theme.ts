@@ -16,32 +16,34 @@ interface Theme {
     important: string
     success: string
   }
+  mediaQueries: {
+    halfScreen: string
+  }
 }
 
-const baseColors = {
-  white: '#FFFFFF',
-  error: '#EE0004',
-  gray: '#797979',
-  border: '#DEDEDE',
-  text: 'black',
-  important: '#D30000',
-  success: '#5CB85C',
+const baseTheme = {
+  colors: {
+    white: '#FFFFFF',
+    error: '#EE0004',
+    gray: '#797979',
+    border: '#DEDEDE',
+    text: 'black',
+    important: '#D30000',
+    success: '#5CB85C',
+  },
+  mediaQueries: {
+    halfScreen: '1440px',
+  },
 }
 
 const emergencyTheme: Theme = {
-  colors: {
-    ...baseColors,
-    primary: '#9E1010',
-    secondary: '#FFF8F8',
-  },
+  ...baseTheme,
+  colors: { ...baseTheme.colors, primary: '#9E1010', secondary: '#FFF8F8' },
 }
 
 const trainingTheme: Theme = {
-  colors: {
-    ...baseColors,
-    primary: '#0D1E75',
-    secondary: '#F9FAFF',
-  },
+  ...baseTheme,
+  colors: { ...baseTheme.colors, primary: '#0D1E75', secondary: '#F9FAFF' },
 }
 
 export { trainingTheme, emergencyTheme }

@@ -14,6 +14,7 @@ import { PersistLogin } from './components/PersistLogin'
 import { emergencyTheme, trainingTheme } from './styles/theme'
 
 import 'react-toastify/dist/ReactToastify.css'
+import { Alert } from './components/UI/Alert'
 
 function App() {
   const { event } = useEvent()
@@ -22,6 +23,7 @@ function App() {
     <ThemeProvider theme={event?.isTraining ? trainingTheme : emergencyTheme}>
       <GlobalStyles />
       <ToastContainer />
+      <Alert />
       <Routes>
         <Route path="*" element={<PageNotFound />} />
         <Route path="unauthorized" element={<Unauthorized />} />

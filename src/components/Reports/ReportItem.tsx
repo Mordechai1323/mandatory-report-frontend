@@ -7,6 +7,7 @@ import { Report } from '../../models/report'
 import deleteIcon from '../../assets/icons/delete.svg'
 import editIcon from '../../assets/icons/edit.svg'
 import { useAuth } from '../../hooks/useAuth'
+import { useAlert } from '../../context/AlertProvider'
 
 interface ReportItemProps {
   report: Report
@@ -17,8 +18,11 @@ interface ReportItemProps {
 export const ReportItem = React.forwardRef<HTMLDivElement, ReportItemProps>(
   ({ report, editReportHandler }, ref) => {
     const { auth } = useAuth()
-    const deleteReportHandler = (report: Report) => {
-      socket.emit('deleteReport', report)
+    const { showAlert } = useAlert()
+
+    const deleteReportHandler = async (report: Report) => {
+      const isConfirmDelete = await showAlert('האם אתה בטוח שאתה רוצה למחוק את הדיווח מהמערכת?')
+      if (isConfirmDelete) socket.emit('deleteReport', report)
     }
 
     const isPassed15Minutes = moment().diff(moment(report.createdAt), 'minutes') > 15
@@ -134,5 +138,26 @@ const ReportItemStyle = styled.div<HomeStyleProps>`
     width: 1%;
     height: auto;
     background-color: ${({ $reportTypeStyle }) => $reportTypeStyle};
+  }
+
+  @media (max-width: ${({ theme }) => theme.mediaQueries.halfScreen}) {
+    & .id {
+      width: 10%;
+    }
+    & .department {
+      width: 10%;
+    }
+    & .date {
+      width: 10%;
+    }
+    & .hour {
+      width: 10%;
+    }
+    & .area {
+      width: 10%;
+    }
+    & .content {
+      width: 40.5%;
+    }
   }
 `
