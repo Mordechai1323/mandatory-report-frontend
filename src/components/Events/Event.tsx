@@ -30,6 +30,7 @@ export const Event = () => {
 
 const EventStyle = styled.div`
   width: 33%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,6 +39,7 @@ const EventStyle = styled.div`
 const EventDetails = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
 
   & img {
     margin-right: 1rem;
@@ -47,5 +49,14 @@ const EventDetails = styled.div`
     cursor: pointer;
     font-size: 1.4rem;
     text-align: center;
+  }
+
+  @media (max-width: ${({ theme }) => theme.mediaQueries.halfScreen}) {
+    & img {
+      margin-right: 0.5rem;
+    }
+    & h2 {
+      font-size: 1rem;
+    }
   }
 `
