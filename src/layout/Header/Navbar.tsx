@@ -31,16 +31,17 @@ export const Navbar = () => {
 
 const NavbarStyle = styled.div`
   display: flex;
-  align-items: end;
+  align-items: center;
   height: 100%;
   margin-left: 0.5rem;
   a {
     margin: 0 0.5rem;
+    display: flex;
   }
 
   & img {
     cursor: pointer;
     margin: 0 0.5rem;
-
+    max-height: 23px;
   }
 `
