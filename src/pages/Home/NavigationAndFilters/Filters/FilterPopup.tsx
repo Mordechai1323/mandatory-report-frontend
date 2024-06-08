@@ -52,14 +52,14 @@ export const FilterPopup = ({ filter }: FilterPopupProps) => {
 
 const FilterPopupStyle = styled.div`
   position: absolute;
-  right: 0;
+  /* right: 0; */
   top: 2rem;
   width: 10vw;
-  min-width: 10rem;
+  min-width: 12rem;
   background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 6px;
-  padding: 1vh 0.5vw;
+  padding: 1vh 0.8vw;
   z-index: 1;
 `
 const ClearFilterStyle = styled.div`
