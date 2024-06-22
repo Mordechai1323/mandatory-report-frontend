@@ -48,7 +48,7 @@ export const Select = <T extends FieldValues>({
   return (
     <MuiRTL>
       <SelectStyle $style={style}>
-        {label && <div className='label'>{label}</div>}
+        {label && <div className="label">{label}</div>}
         <div className="main-container">
           <div className="select-container" style={{ borderColor: errMessage ? 'red' : '' }}>
             <Controller
@@ -62,6 +62,13 @@ export const Select = <T extends FieldValues>({
                   id={name}
                   {...field}
                   {...select}
+                  // MenuProps={{
+                  //   PaperProps: {
+                  //     style: {
+                  //       maxHeight: 150, // Set the maximum height here
+                  //     },
+                  //   },
+                  // }}
                 >
                   {options.map((option) => (
                     <StyledMenuItem
