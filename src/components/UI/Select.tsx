@@ -14,11 +14,6 @@ import {
 import { MuiRTL } from './MuiRTL'
 import errorIcon from '../../assets/icons/error.svg'
 
-interface StyledMenuItemProps extends MenuItemProps {
-  background: string
-  color: string
-}
-
 export type SelectProperties<T extends FieldValues> = {
   label?: string
   icon?: string
@@ -32,6 +27,11 @@ export type SelectProperties<T extends FieldValues> = {
 
 type SelectStyle = React.CSSProperties | undefined
 type SelectOption = { label: string; value: number | string }
+
+interface StyledMenuItemProps extends MenuItemProps {
+  background: string
+  color: string
+}
 
 export const Select = <T extends FieldValues>({
   options,
@@ -48,7 +48,7 @@ export const Select = <T extends FieldValues>({
   return (
     <MuiRTL>
       <SelectStyle $style={style}>
-        {label && <div>{label}</div>}
+        {label && <div className='label'>{label}</div>}
         <div className="main-container">
           <div className="select-container" style={{ borderColor: errMessage ? 'red' : '' }}>
             <Controller
@@ -92,10 +92,9 @@ export const Select = <T extends FieldValues>({
 }
 
 const SelectStyle = styledComponents.div<{ $style: SelectStyle }>`
-  
-  margin-top: ${({ $style }) => $style?.marginTop || '0'};
+ margin-top: ${({ $style }) => $style?.marginTop || '0'};
 
-& label {
+& .label {
   font-size: 1em;
   margin-bottom: 0.5rem;
   height: 100%;
@@ -107,8 +106,6 @@ const SelectStyle = styledComponents.div<{ $style: SelectStyle }>`
   justify-content: space-between;
 
   & .select-container {
-    display: flex;
-    align-items: center;
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 6px;
     width: 95%;
