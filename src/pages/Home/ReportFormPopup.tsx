@@ -9,8 +9,8 @@ import { notify } from '../../utils/notify'
 import { useAreas } from '../../hooks/useAreas'
 import { Modal } from '../../components/UI/Modal'
 import { Input } from '../../components/UI/Input'
+import { Select } from '../../components/UI/Select'
 import { Button } from '../../components/UI/Button'
-import { AddReportSelect } from './AddReportSelect'
 import { useDepartments } from '../../hooks/useDepartments'
 import { useReportsTypes } from '../../hooks/useReportsTypes'
 import { CenterContainer } from '../../components/UI/CenterContainer'
@@ -38,8 +38,7 @@ export const ReportFormPopup = ({
   const {
     register,
     handleSubmit,
-    trigger,
-    setValue,
+    control,
     formState: { errors },
   } = useForm<ReportForm>({
     defaultValues: isEdit ? report : reportFormUserChoices,
@@ -48,13 +47,6 @@ export const ReportFormPopup = ({
   const { departments } = useDepartments()
   const { areas } = useAreas()
   const { reportsTypes } = useReportsTypes()
-
-  const handleSelectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = event.target
-
-    setValue(name as keyof ReportForm, Number(value))
-    await trigger(name as keyof ReportForm)
-  }
 
   const onSubmitHandler: SubmitHandler<ReportForm> = (data) => {
     setIsLoading(true)
@@ -113,50 +105,37 @@ export const ReportFormPopup = ({
               }}
               errMessage={errors.content?.message}
             />
-            <AddReportSelect
-              options={reportsTypes}
-              props={{
-                label: 'מהות הדיווח',
-                select: {
-                  id: 'reportTypeId',
-                  name: 'reportTypeId',
-                  onChange: handleSelectChange,
-                  defaultValue: report?.reportType.id ?? reportFormUserChoices.reportTypeId,
-                  placeholder: 'בחר מהות הדיווח',
-                },
-                style: { marginTop: '2rem' },
-                errMessage: errors.reportTypeId?.message,
-              }}
+            <Select<ReportForm>
+              options={reportsTypes?.map((reportType) => ({
+                value: reportType.id,
+                label: reportType.name,
+              }))}
+              control={control}
+              name={'reportTypeId'}
+              label={'מהות הדיווח'}
+              style={{ marginTop: '2rem' }}
+              errMessage={errors.reportTypeId?.message}
             />
-            <AddReportSelect
-              options={departments}
-              props={{
-                label: 'מכלול מדווח',
-                select: {
-                  id: 'department',
-                  name: 'departmentId',
-                  onChange: handleSelectChange,
-                  defaultValue: report?.department.id ?? reportFormUserChoices.departmentId,
-                  placeholder: 'בחר מכלול מדווח',
-                },
-                style: { marginTop: '2rem' },
-                errMessage: errors.departmentId?.message,
-              }}
+
+            <Select<ReportForm>
+              options={departments?.map((department) => ({
+                value: department.id,
+                label: department.name,
+              }))}
+              control={control}
+              name={'departmentId'}
+              label={'מכלול מדווח'}
+              style={{ marginTop: '2rem' }}
+              errMessage={errors.departmentId?.message}
             />
-            <AddReportSelect
-              options={areas}
-              props={{
-                label: 'זירה',
-                select: {
-                  id: 'area',
-                  name: 'areaId',
-                  onChange: handleSelectChange,
-                  defaultValue: report?.area.id ?? reportFormUserChoices.areaId,
-                  placeholder: 'בחר זירה',
-                },
-                style: { marginTop: '2rem' },
-                errMessage: errors.areaId?.message,
-              }}
+
+            <Select<ReportForm>
+              options={areas?.map((area) => ({ value: area.id, label: area.name }))}
+              control={control}
+              name={'areaId'}
+              label={'זירה'}
+              style={{ marginTop: '2rem' }}
+              errMessage={errors.areaId?.message}
             />
             <Input
               label="סמן האם ההודעה חשובה"
