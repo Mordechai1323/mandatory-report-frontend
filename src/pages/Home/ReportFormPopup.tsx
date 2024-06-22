@@ -13,6 +13,7 @@ import { Select } from '../../components/UI/Select'
 import { Button } from '../../components/UI/Button'
 import { useDepartments } from '../../hooks/useDepartments'
 import { useReportsTypes } from '../../hooks/useReportsTypes'
+import { Autocomplete } from '../../components/UI/Autocomplete'
 import { CenterContainer } from '../../components/UI/CenterContainer'
 import { Report, ReportForm, reportSchema } from '../../models/report'
 import { getUserChoices, setUserChoices } from '../../utils/reportForm'
@@ -89,20 +90,19 @@ export const ReportFormPopup = ({
       isOpen={isOpen}
       onClose={handleClose}
       title={title}
-      style={{ width: '38rem', height: '40rem' }}
+      style={{ width: '38rem', minHight: '40rem' }}
     >
       {!departments || !areas || !reportsTypes ? (
         <Loading />
       ) : (
         <ReportFormPopupStyle onSubmit={handleSubmit(onSubmitHandler)}>
           <CenterContainer style={{ height: '90%', marginRight: '5%' }}>
-            <Input
+            <Autocomplete<ReportForm>
               label="תוכן הדיווח"
-              input={{
-                placeholder: '*תוכן הדיווח מוגבל עד 250 תווים',
-                ...register('content'),
-                id: 'content',
-              }}
+              control={control}
+              name="content"
+              placeholder={'*תוכן הדיווח מוגבל עד 250 תווים'}
+              options={['aaaaaa', 'bbbbbbb', 'cccccc']}
               errMessage={errors.content?.message}
             />
             <Select<ReportForm>
@@ -180,6 +180,7 @@ const ReportFormPopupStyle = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 2rem;
 
   & .report-limit {
     color: ${({ theme }) => theme.colors.gray};
@@ -189,6 +190,7 @@ const ReportFormPopupStyle = styled.form`
 `
 const BottomContainer = styled.div`
   margin-top: 5rem;
+  margin-bottom: 2rem;
   width: 100%;
   display: flex;
   align-items: center;
