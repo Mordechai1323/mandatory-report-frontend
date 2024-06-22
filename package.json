@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.3.4",
     "@mantine/hooks": "^7.8.0",
+    "@mui/material": "^5.15.20",
     "@tanstack/react-query": "^5.29.2",
     "@types/socket.io-client": "^3.0.0",
     "axios": "^1.6.8",
@@ -23,6 +26,7 @@
     "react-toastify": "^10.0.5",
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.8",
+    "stylis-plugin-rtl": "^2.1.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
