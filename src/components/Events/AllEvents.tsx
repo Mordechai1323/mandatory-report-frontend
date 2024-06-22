@@ -91,13 +91,12 @@ const AllEventsStyle = styled.div`
   width: 100%;
   height: 88%;
   overflow: auto;
-  direction: ltr;
   margin-top: 2rem;
+  padding-left: 0.5rem;
 `
 const ChooseEventTypeStyle = styled.div`
   display: flex;
   width: 100%;
-  direction: rtl;
 `
 const EventTypeContainer = styled.div<{ $isCurrent: boolean }>`
   width: 50%;
@@ -109,7 +108,6 @@ const EventTypeContainer = styled.div<{ $isCurrent: boolean }>`
 `
 const EventsContainer = styled.div`
   width: 100%;
-  direction: rtl;
 `
 const EventItem = styled.div`
   text-align: start;

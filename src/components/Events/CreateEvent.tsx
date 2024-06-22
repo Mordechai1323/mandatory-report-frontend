@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { SelectChangeEvent } from '@mui/material'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -24,6 +25,7 @@ export const CreateEvent = ({ closeEventPopup, setEventPopupType }: CreateEventP
     handleSubmit,
     trigger,
     setValue,
+    control,
     formState: { errors },
   } = useForm<EventForm>({
     resolver: zodResolver(eventSchema),
@@ -41,7 +43,7 @@ export const CreateEvent = ({ closeEventPopup, setEventPopupType }: CreateEventP
     },
   })
 
-  const handleSelectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectChange = async (event: SelectChangeEvent<unknown>) => {
     const value = event.target.value as EventType
 
     setValue('isTraining', value === 'תרגיל')
@@ -52,6 +54,7 @@ export const CreateEvent = ({ closeEventPopup, setEventPopupType }: CreateEventP
     setIsLoading(true)
     mutate(data)
   }
+  console.log(errors)
 
   return (
     <CreateEventStyle onSubmit={handleSubmit(onSubmit)}>
@@ -69,25 +72,23 @@ export const CreateEvent = ({ closeEventPopup, setEventPopupType }: CreateEventP
           style={{ marginTop: '2.5rem' }}
           errMessage={errors.name?.message}
         />
-        <Select
-          props={{
-            label: 'סוג האירוע',
-            select: {
-              id: 'isTraining',
-              name: 'isTraining',
-              onChange: handleSelectChange,
-              placeholder: 'בחר סוג אירוע',
+        <Select<EventForm>
+          options={eventsTypes?.map((eventType) => ({ value: eventType, label: eventType }))}
+          control={control}
+          select={{
+            onChange: handleSelectChange,
+            MenuProps: {
+              disablePortal: true,
+              onClick: (e) => {
+                e.preventDefault()
+              },
             },
-            style: { marginTop: '2.5rem' },
-            errMessage: errors.isTraining?.message,
           }}
-        >
-          {eventsTypes.map((eventType) => (
-            <option value={eventType} key={eventType}>
-              {eventType}
-            </option>
-          ))}
-        </Select>
+          name={'isTraining'}
+          label={'סוג האירוע'}
+          style={{ marginTop: '2rem' }}
+          errMessage={errors.isTraining?.message}
+        />
       </div>
 
       <BottomContainer>

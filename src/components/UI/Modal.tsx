@@ -12,6 +12,8 @@ interface ModalProps {
 type ModalStyle = {
   width?: string
   height?: string
+  minHight?: string
+  maxWidth?: string
 }
 
 const ModalOverlay = styled.div`
@@ -33,6 +35,8 @@ const ModalContainer = styled.div<{ $style: ModalStyle }>`
   border-radius: 8px;
   width: ${({ $style }) => $style?.width || 'auto'};
   height: ${({ $style }) => $style?.height || 'auto'};
+  min-height: ${({ $style }) => $style?.minHight || 'auto'};
+  max-height: ${({ $style }) => $style?.maxWidth || 'auto'};
   overflow: hidden;
 `
 
