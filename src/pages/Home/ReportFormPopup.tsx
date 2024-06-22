@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Loading } from '../Loading'
 import { socket } from '../../socket'
@@ -13,8 +13,9 @@ import { Button } from '../../components/UI/Button'
 import { AddReportSelect } from './AddReportSelect'
 import { useDepartments } from '../../hooks/useDepartments'
 import { useReportsTypes } from '../../hooks/useReportsTypes'
-import { Report, ReportForm, reportSchema } from '../../models/report'
 import { CenterContainer } from '../../components/UI/CenterContainer'
+import { Report, ReportForm, reportSchema } from '../../models/report'
+import { getUserChoices, setUserChoices } from '../../utils/reportForm'
 
 interface ReportFormPopupProps {
   isOpen: boolean
@@ -33,6 +34,7 @@ export const ReportFormPopup = ({
 }: ReportFormPopupProps) => {
   const isEdit = !!report
   const [isLoading, setIsLoading] = React.useState(false)
+  const reportFormUserChoices = getUserChoices()
   const {
     register,
     handleSubmit,
@@ -40,7 +42,7 @@ export const ReportFormPopup = ({
     setValue,
     formState: { errors },
   } = useForm<ReportForm>({
-    defaultValues: isEdit ? report : {},
+    defaultValues: isEdit ? report : reportFormUserChoices,
     resolver: zodResolver(reportSchema),
   })
   const { departments } = useDepartments()
@@ -58,28 +60,25 @@ export const ReportFormPopup = ({
     setIsLoading(true)
 
     const handleUpdateReport = (updatedReport: Report) => {
-      setIsLoading(false)
-      handleClose()
-
       if (updatedReport.id) {
         notify('success', 'הדיווח עודכן בהצלחה')
       } else {
         notify('error', 'הדיווח לא נשמר, נסה שוב')
       }
-
+      setIsLoading(false)
+      handleClose()
       socket.off('updateReport', handleUpdateReport)
     }
 
     const handleCreateReport = (createdReport: Report) => {
-      setIsLoading(false)
-      handleClose()
-
       if (createdReport.id) {
         notify('success', 'הדיווח נשלח בהצלחה')
       } else {
         notify('error', 'הדיווח לא נשלח, נסה שוב')
       }
-
+      setIsLoading(false)
+      setUserChoices(createdReport)
+      handleClose()
       socket.off('createReport', handleCreateReport)
     }
 
@@ -122,7 +121,7 @@ export const ReportFormPopup = ({
                   id: 'reportTypeId',
                   name: 'reportTypeId',
                   onChange: handleSelectChange,
-                  defaultValue: report?.reportType.id,
+                  defaultValue: report?.reportType.id ?? reportFormUserChoices.reportTypeId,
                   placeholder: 'בחר מהות הדיווח',
                 },
                 style: { marginTop: '2rem' },
@@ -137,7 +136,7 @@ export const ReportFormPopup = ({
                   id: 'department',
                   name: 'departmentId',
                   onChange: handleSelectChange,
-                  defaultValue: report?.department.id,
+                  defaultValue: report?.department.id ?? reportFormUserChoices.departmentId,
                   placeholder: 'בחר מכלול מדווח',
                 },
                 style: { marginTop: '2rem' },
@@ -152,7 +151,7 @@ export const ReportFormPopup = ({
                   id: 'area',
                   name: 'areaId',
                   onChange: handleSelectChange,
-                  defaultValue: report?.area.id,
+                  defaultValue: report?.area.id ?? reportFormUserChoices.areaId,
                   placeholder: 'בחר זירה',
                 },
                 style: { marginTop: '2rem' },
