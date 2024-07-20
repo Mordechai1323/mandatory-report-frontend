@@ -1,11 +1,12 @@
 import styled from 'styled-components'
-import { Range, DateRange as ReactDateRang } from 'react-date-range'
+import { Range, RangeKeyDict, DateRange as ReactDateRang } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
+import { he } from 'date-fns/locale'
 
 interface DateRangeProps {
   range: Range
-  onChangeHandler: (ranges: Range) => void
+  onChangeHandler: (ranges: RangeKeyDict) => void
 }
 
 export const DateRange = ({ onChangeHandler, range }: DateRangeProps) => {
@@ -16,6 +17,7 @@ export const DateRange = ({ onChangeHandler, range }: DateRangeProps) => {
         onChange={onChangeHandler}
         showMonthAndYearPickers={false}
         showDateDisplay={false}
+        locale={he}
         // scroll={{ enabled: true }}
       />
     </DateRangeStyle>
@@ -23,7 +25,7 @@ export const DateRange = ({ onChangeHandler, range }: DateRangeProps) => {
 }
 
 const DateRangeStyle = styled.div`
-  direction: ltr;
+  /* direction: ltr; */
   width: 50vw;
   height: 50vh;
   display: flex;
@@ -34,17 +36,28 @@ const DateRangeStyle = styled.div`
   }
 
   & .rdrStartEdge {
-    border-radius: 8px 0px 0px 8px;
     background: ${(props) => props.theme.colors.primary};
+    border-radius: 0px 8px 8px 0px;
   }
 
   & .rdrEndEdge {
-    border-radius: 0px 8px 8px 0px;
+    border-radius: 8px 0px 0px 8px;
     background: ${(props) => props.theme.colors.primary};
   }
 
   & .rdrInRange {
     background: ${(props) => props.theme.colors.secondary};
+    border-radius: 0;
+    right: 0;
+    left: 0;
+  }
+
+  & .rdrDayEndOfWeek > .rdrInRange {
+    border-radius: 8px 0px 0px 8px;
+  }
+
+  & .rdrDayStartOfWeek > .rdrInRange {
+    border-radius: 0px 8px 8px 0px;
   }
   .rdrDay:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span {
     color: ${(props) => props.theme.colors.primary};
@@ -61,5 +74,13 @@ const DateRangeStyle = styled.div`
 
   & .rdrNextPrevButton {
     background: none;
+  }
+
+  & .rdrMonthAndYearWrapper {
+    direction: ltr;
+  }
+
+  & .rdrDayToday .rdrDayNumber span:after {
+    background: black;
   }
 `
