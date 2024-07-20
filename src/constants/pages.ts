@@ -2,6 +2,7 @@ import { Home } from '../pages/Home/Home'
 
 import graphs from '../assets/icons/graphs.svg'
 import { ManageLists } from '../pages/Admin/ManageLists/ManageLists'
+import { UsersPermissions } from '../pages/Admin/UsersPermissions/UsersPermissions'
 
 export const PAGES = [
   {
@@ -21,6 +22,12 @@ export const PAGES = [
     name: 'אדמין',
     path: '/admin/manage-lists',
     component: ManageLists,
+    isDisplayNavbar: false,
+  },
+  {
+    name: 'משתמשים והרשאות',
+    path: '/admin/users-permissions',
+    component: UsersPermissions,
     isDisplayNavbar: false,
   },
 ]
