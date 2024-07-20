@@ -32,9 +32,12 @@ export const useReports = () => {
       if (!updatedReport.id) return
 
       setReports((prevReports) => {
-        return prevReports?.map((report) =>
-          report.id === updatedReport.id ? updatedReport : report
+        // Remove the updated report from its current position
+        const reportsWithoutUpdated = prevReports?.filter(
+          (report) => report.id !== updatedReport.id
         )
+        // Add the updated report to the top of the list
+        return [updatedReport, ...(reportsWithoutUpdated ?? [])]
       })
     }
 
