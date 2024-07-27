@@ -54,7 +54,7 @@ export const PresetForm = ({ isOpen, handleClose, title, preset }: PresetFormPro
       isOpen={isOpen}
       onClose={handleClose}
       title={title}
-      style={{ width: '38rem', minHight: '34.5rem' }}
+      style={{ width: '38rem', height: '30.5rem' }}
     >
       {!departments ? (
         <Loading />
@@ -112,7 +112,6 @@ const PresetFormStyle = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
 
   & .report-limit {
     color: ${({ theme }) => theme.colors.gray};
