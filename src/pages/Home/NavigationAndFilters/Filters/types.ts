@@ -1,3 +1,5 @@
+import { Report } from "../../../../models/report"
+
 export type Filters = {
     time: FilterTime
     area: number[]
@@ -14,6 +16,7 @@ export type Filters = {
     filters: Filters
     changeFilter: (filterType: keyof Filters, filter: FilterOption) => void
     clearFilter: (filterType: keyof Filters) => void
+    isReportInFilters(report: Report): boolean
   }
 
   export type FilterData = {

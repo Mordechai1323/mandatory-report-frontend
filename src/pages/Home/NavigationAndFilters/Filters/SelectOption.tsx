@@ -4,11 +4,11 @@ import { FilterOption } from './types'
 
 interface SelectOptionProps {
   option: FilterOption
-  isSelected: boolean
+  isSelected?: boolean
   onClickHandler: (option: FilterOption) => void
 }
 
-export const SelectOption = ({ isSelected, option, onClickHandler }: SelectOptionProps) => {
+export const SelectOption = ({ isSelected = false, option, onClickHandler }: SelectOptionProps) => {
   return (
     <SelectOptionStyle $isSelected={isSelected} onClick={() => onClickHandler(option)}>
       <div className="border"></div>

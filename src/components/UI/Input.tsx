@@ -2,31 +2,48 @@ import React from 'react'
 import styled from 'styled-components'
 
 import errorIcon from '../../assets/icons/error.svg'
+import { Tooltip } from '@mui/material'
 
 interface InputProps {
   label?: string
   icon?: string
-  input: React.InputHTMLAttributes<HTMLInputElement>
+  input?: React.InputHTMLAttributes<HTMLInputElement>
+  textArea?: React.TextareaHTMLAttributes<HTMLTextAreaElement>
   style?: InputStyle
+  isTextArea?: boolean
   errMessage?: string
 }
 
 type InputStyle =
-  | (React.CSSProperties & { marginTopInputContainer?: string; paddingLabel?: string, widthContainer?: string })
+  | (React.CSSProperties & {
+      marginTopInputContainer?: string
+      paddingLabel?: string
+      widthContainer?: string
+    })
   | undefined
 
-export function Input({ label, input, icon, style, errMessage }: InputProps) {
+export function Input({
+  label,
+  input,
+  isTextArea = false,
+  textArea,
+  icon,
+  style,
+  errMessage,
+}: InputProps) {
   return (
     <InputStyle $style={style}>
-      {label && <label htmlFor={input.id}>{label}</label>}
+      {label && <label htmlFor={!isTextArea ? input?.id : textArea?.id}>{label}</label>}
       <div className="main-container">
         <div className="input-container" style={{ borderColor: errMessage ? 'red' : '' }}>
-          <input {...input} />
+          {!isTextArea ? <input {...input} /> : <textarea {...textArea} />}
           {icon && <img src={icon} alt="icon" />}
         </div>
         {errMessage && (
           <div tabIndex={0} className="err-container">
-            <img src={errorIcon} alt="error" />
+            <Tooltip title={errMessage}>
+              <img src={errorIcon} alt="error" />
+            </Tooltip>
           </div>
         )}
       </div>
@@ -34,7 +51,7 @@ export function Input({ label, input, icon, style, errMessage }: InputProps) {
   )
 }
 
-const InputStyle = styled.div<{ $style: InputStyle}>`
+const InputStyle = styled.div<{ $style: InputStyle }>`
   margin-top: ${({ $style }) => $style?.marginTop || '0'};
   display: ${({ $style }) => $style?.display || 'block'};
   align-items: ${({ $style }) => $style?.alignItems || 'center'};
@@ -60,12 +77,13 @@ const InputStyle = styled.div<{ $style: InputStyle}>`
       padding: ${({ $style }) => $style?.padding || '0.5rem'};
       width: ${({ $style }) => $style?.widthContainer || '95%'};
 
-      & input {
+      & input, textarea {
         width: ${({ $style }) => $style?.width || '100%'};
         font-size: 1em;
         border: none;
         outline: none;
       }
+
 
       input[type='checkbox'] {
         transform: scale(1.5);

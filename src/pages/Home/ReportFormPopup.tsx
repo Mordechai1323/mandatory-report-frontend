@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Loading } from '../Loading'
 import { socket } from '../../socket'
@@ -9,12 +9,14 @@ import { notify } from '../../utils/notify'
 import { useAreas } from '../../hooks/useAreas'
 import { Modal } from '../../components/UI/Modal'
 import { Input } from '../../components/UI/Input'
+import { Select } from '../../components/UI/Select'
 import { Button } from '../../components/UI/Button'
-import { AddReportSelect } from './AddReportSelect'
 import { useDepartments } from '../../hooks/useDepartments'
 import { useReportsTypes } from '../../hooks/useReportsTypes'
-import { Report, ReportForm, reportSchema } from '../../models/report'
+import { Autocomplete } from '../../components/UI/Autocomplete'
 import { CenterContainer } from '../../components/UI/CenterContainer'
+import { Report, ReportForm, reportSchema } from '../../models/report'
+import { getUserChoices, setUserChoices } from '../../utils/reportForm'
 
 interface ReportFormPopupProps {
   isOpen: boolean
@@ -33,53 +35,44 @@ export const ReportFormPopup = ({
 }: ReportFormPopupProps) => {
   const isEdit = !!report
   const [isLoading, setIsLoading] = React.useState(false)
+  const reportFormUserChoices = getUserChoices()
   const {
     register,
     handleSubmit,
-    trigger,
-    setValue,
+    control,
     formState: { errors },
   } = useForm<ReportForm>({
-    defaultValues: isEdit ? report : {},
+    defaultValues: isEdit ? report : reportFormUserChoices,
     resolver: zodResolver(reportSchema),
   })
   const { departments } = useDepartments()
   const { areas } = useAreas()
   const { reportsTypes } = useReportsTypes()
 
-  const handleSelectChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = event.target
-
-    setValue(name as keyof ReportForm, Number(value))
-    await trigger(name as keyof ReportForm)
-  }
-
   const onSubmitHandler: SubmitHandler<ReportForm> = (data) => {
     setIsLoading(true)
 
     const handleUpdateReport = (updatedReport: Report) => {
-      setIsLoading(false)
-      handleClose()
-
       if (updatedReport.id) {
         notify('success', 'הדיווח עודכן בהצלחה')
       } else {
         notify('error', 'הדיווח לא נשמר, נסה שוב')
       }
-
+      setIsLoading(false)
+      handleClose()
       socket.off('updateReport', handleUpdateReport)
     }
 
-    const handleCreateReport = (createdReport: Report) => {
+    const handleCreateReport = (newReport: Report) => {
       setIsLoading(false)
       handleClose()
+      setUserChoices(newReport)
 
-      if (createdReport.id) {
+      if (newReport.id) {
         notify('success', 'הדיווח נשלח בהצלחה')
       } else {
         notify('error', 'הדיווח לא נשלח, נסה שוב')
       }
-
       socket.off('createReport', handleCreateReport)
     }
 
@@ -98,66 +91,52 @@ export const ReportFormPopup = ({
       isOpen={isOpen}
       onClose={handleClose}
       title={title}
-      style={{ width: '38rem', height: '40rem' }}
+      style={{ width: '38rem', minHight: '40rem' }}
     >
       {!departments || !areas || !reportsTypes ? (
         <Loading />
       ) : (
         <ReportFormPopupStyle onSubmit={handleSubmit(onSubmitHandler)}>
           <CenterContainer style={{ height: '90%', marginRight: '5%' }}>
-            <Input
+            <Autocomplete<ReportForm>
               label="תוכן הדיווח"
-              input={{
-                placeholder: '*תוכן הדיווח מוגבל עד 250 תווים',
-                ...register('content'),
-                id: 'content',
-              }}
+              control={control}
+              name="content"
+              placeholder={'*תוכן הדיווח מוגבל עד 250 תווים'}
+              options={['aaaaaa', 'bbbbbbb', 'cccccc']}
               errMessage={errors.content?.message}
             />
-            <AddReportSelect
-              options={reportsTypes}
-              props={{
-                label: 'מהות הדיווח',
-                select: {
-                  id: 'reportTypeId',
-                  name: 'reportTypeId',
-                  onChange: handleSelectChange,
-                  defaultValue: report?.reportType.id,
-                  placeholder: 'בחר מהות הדיווח',
-                },
-                style: { marginTop: '2rem' },
-                errMessage: errors.reportTypeId?.message,
-              }}
+            <Select<ReportForm>
+              options={reportsTypes?.map((reportType) => ({
+                value: reportType.id,
+                label: reportType.name,
+              }))}
+              control={control}
+              name={'reportTypeId'}
+              label={'מהות הדיווח'}
+              style={{ marginTop: '2rem' }}
+              errMessage={errors.reportTypeId?.message}
             />
-            <AddReportSelect
-              options={departments}
-              props={{
-                label: 'מכלול מדווח',
-                select: {
-                  id: 'department',
-                  name: 'departmentId',
-                  onChange: handleSelectChange,
-                  defaultValue: report?.department.id,
-                  placeholder: 'בחר מכלול מדווח',
-                },
-                style: { marginTop: '2rem' },
-                errMessage: errors.departmentId?.message,
-              }}
+
+            <Select<ReportForm>
+              options={departments?.map((department) => ({
+                value: department.id,
+                label: department.name,
+              }))}
+              control={control}
+              name={'departmentId'}
+              label={'מכלול מדווח'}
+              style={{ marginTop: '2rem' }}
+              errMessage={errors.departmentId?.message}
             />
-            <AddReportSelect
-              options={areas}
-              props={{
-                label: 'זירה',
-                select: {
-                  id: 'area',
-                  name: 'areaId',
-                  onChange: handleSelectChange,
-                  defaultValue: report?.area.id,
-                  placeholder: 'בחר זירה',
-                },
-                style: { marginTop: '2rem' },
-                errMessage: errors.areaId?.message,
-              }}
+
+            <Select<ReportForm>
+              options={areas?.map((area) => ({ value: area.id, label: area.name }))}
+              control={control}
+              name={'areaId'}
+              label={'זירה'}
+              style={{ marginTop: '2rem' }}
+              errMessage={errors.areaId?.message}
             />
             <Input
               label="סמן האם ההודעה חשובה"
@@ -202,6 +181,7 @@ const ReportFormPopupStyle = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 2rem;
 
   & .report-limit {
     color: ${({ theme }) => theme.colors.gray};
@@ -211,6 +191,7 @@ const ReportFormPopupStyle = styled.form`
 `
 const BottomContainer = styled.div`
   margin-top: 5rem;
+  margin-bottom: 2rem;
   width: 100%;
   display: flex;
   align-items: center;
