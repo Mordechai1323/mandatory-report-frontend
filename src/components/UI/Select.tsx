@@ -1,88 +1,151 @@
 import React from 'react'
-import styled from 'styled-components'
+import { useTheme } from 'styled-components'
+import { Control, Controller, FieldValues, Path } from 'react-hook-form'
+import { styled as styledComponents } from 'styled-components'
+import {
+  Select as MuiSelect,
+  SelectProps,
+  MenuItem,
+  styled,
+  MenuItemProps,
+  Tooltip,
+} from '@mui/material'
 
+import { MuiRTL } from './MuiRTL'
 import errorIcon from '../../assets/icons/error.svg'
 
-interface SelectProps {
-  props: SelectProperties
-  children: React.ReactNode
-}
-
-export type SelectProperties = {
+export type SelectProperties<T extends FieldValues> = {
   label?: string
   icon?: string
-  select: React.SelectHTMLAttributes<HTMLSelectElement> & { placeholder?: string }
+  name: Path<T>
+  select?: SelectProps
+  options: SelectOption[]
   style?: SelectStyle
   errMessage?: string
+  control?: Control<T>
 }
-type SelectStyle = React.CSSProperties | undefined
 
-export function Select({ props, children }: SelectProps) {
+type SelectStyle = React.CSSProperties | undefined
+type SelectOption = { label: string; value: number | string }
+
+interface StyledMenuItemProps extends MenuItemProps {
+  background: string
+  color: string
+}
+
+export const Select = <T extends FieldValues>({
+  options,
+  select,
+  errMessage,
+  icon,
+  label,
+  name,
+  style,
+  control,
+}: SelectProperties<T>) => {
+  const theme = useTheme()
+
   return (
-    <SelectStyle $style={props.style}>
-      {props.label && <label htmlFor={props.select.id}>{props.label}</label>}
-      <div className="main-container">
-        <div className="select-container" style={{ borderColor: props.errMessage ? 'red' : '' }}>
-          <select {...props.select}>
-            {props.select.placeholder && (
-              <option value="" disabled selected hidden>
-                {props.select.placeholder}
-              </option>
-            )}
-            {children}
-          </select>
-          {props.icon && <img src={props.icon} alt="icon" />}
-        </div>
-        {props.errMessage && (
-          <div tabIndex={0} className="err-container">
-            <img src={errorIcon} alt="error" />
+    <MuiRTL>
+      <SelectStyle $style={style}>
+        {label && <div className="label">{label}</div>}
+        <div className="main-container">
+          <div className="select-container" style={{ borderColor: errMessage ? 'red' : '' }}>
+            <Controller
+              name={name}
+              control={control}
+              render={({ field }) => (
+                <SelectStyled
+                  fullWidth
+                  disableUnderline
+                  variant="standard"
+                  id={name}
+                  {...field}
+                  {...select}
+                  // MenuProps={{
+                  //   PaperProps: {
+                  //     style: {
+                  //       maxHeight: 150, // Set the maximum height here
+                  //     },
+                  //   },
+                  // }}
+                >
+                  {options.map((option) => (
+                    <StyledMenuItem
+                      color={theme.colors.primary}
+                      background={theme.colors.secondary}
+                      value={option.value}
+                      key={option.value}
+                    >
+                      {option.label}
+                    </StyledMenuItem>
+                  ))}
+                </SelectStyled>
+              )}
+            />
+            {icon && <img src={icon} alt="icon" />}
           </div>
-        )}
-      </div>
-    </SelectStyle>
+          {errMessage && (
+            <div tabIndex={0} className="err-container">
+              <Tooltip title={errMessage}>
+                <img src={errorIcon} alt="error" />
+              </Tooltip>
+            </div>
+          )}
+        </div>
+      </SelectStyle>
+    </MuiRTL>
   )
 }
 
-const SelectStyle = styled.div<{ $style: SelectStyle }>`
-  margin-top: ${({ $style }) => $style?.marginTop || '0'};
+const SelectStyle = styledComponents.div<{ $style: SelectStyle }>`
+ margin-top: ${({ $style }) => $style?.marginTop || '0'};
 
-  & label {
-    font-size: 1em;
-    margin-bottom: 0.5rem;
-    height: 100%;
+& .label {
+  font-size: 1em;
+  margin-bottom: 0.5rem;
+  height: 100%;
+}
+& .main-container {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & .select-container {
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: 6px;
+    width: 95%;
+    height: 2.5rem;
+    padding: 0.5rem;
   }
-  & .main-container {
-    margin-top: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 
-    & .select-container {
-      display: flex;
-      align-items: center;
-      border: 1px solid ${({ theme }) => theme.colors.border};
-      border-radius: 6px;
-      padding: 0.5rem;
-      width: 95%;
 
-      & select {
-        width: ${({ $style }) => $style?.width || '100%'};
-        font-size: 1em;
-        border: none;
-        outline: none;
-      }
-    }
+  & .err-container {
+    color: red;
+    font-weight: bold;
+    font-size: 0.85em;
+  }
+}
+`
 
-    & Select::-webkit-outer-spin-button,
-    & Select::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    & .err-container {
-      color: red;
-      font-weight: bold;
-      font-size: 0.85em;
-    }
+const StyledMenuItem = styled((props: StyledMenuItemProps) => <MenuItem {...props} />)`
+  width: 100%;
+  &:hover {
+    background: ${({ background }) => background};
+    color: ${({ color }) => color};
   }
 `
+
+const SelectStyled = styled(MuiSelect)({
+  height: '100%',
+  '& .MuiSelect-select:focus': {
+    backgroundColor: 'transparent',
+  },
+  '& .MuiMenuItem-root.Mui-selected': {
+    backgroundColor: 'transparent',
+  },
+  '& .MuiMenuItem-root.Mui-selected:hover': {
+    backgroundColor: 'transparent',
+  },
+})

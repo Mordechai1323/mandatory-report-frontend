@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import errorIcon from '../../assets/icons/error.svg'
+import { Tooltip } from '@mui/material'
 
 interface InputProps {
   label?: string
@@ -12,7 +13,11 @@ interface InputProps {
 }
 
 type InputStyle =
-  | (React.CSSProperties & { marginTopInputContainer?: string; paddingLabel?: string, widthContainer?: string })
+  | (React.CSSProperties & {
+      marginTopInputContainer?: string
+      paddingLabel?: string
+      widthContainer?: string
+    })
   | undefined
 
 export function Input({ label, input, icon, style, errMessage }: InputProps) {
@@ -26,7 +31,9 @@ export function Input({ label, input, icon, style, errMessage }: InputProps) {
         </div>
         {errMessage && (
           <div tabIndex={0} className="err-container">
-            <img src={errorIcon} alt="error" />
+            <Tooltip title={errMessage}>
+              <img src={errorIcon} alt="error" />
+            </Tooltip>
           </div>
         )}
       </div>
@@ -34,7 +41,7 @@ export function Input({ label, input, icon, style, errMessage }: InputProps) {
   )
 }
 
-const InputStyle = styled.div<{ $style: InputStyle}>`
+const InputStyle = styled.div<{ $style: InputStyle }>`
   margin-top: ${({ $style }) => $style?.marginTop || '0'};
   display: ${({ $style }) => $style?.display || 'block'};
   align-items: ${({ $style }) => $style?.alignItems || 'center'};
