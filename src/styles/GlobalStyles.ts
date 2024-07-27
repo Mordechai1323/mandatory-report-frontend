@@ -51,6 +51,11 @@ export const GlobalStyles = createGlobalStyle`
         list-style: none;
     }
 
+    button{
+        cursor: pointer;
+        border: none;
+        background: none;
+    }
 
 
 

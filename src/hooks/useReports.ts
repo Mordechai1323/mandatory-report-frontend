@@ -4,6 +4,7 @@ import { socket } from '../socket'
 import { useEvent } from './useEvent'
 import { Report } from '../models/report'
 import { useNotifications } from './useNotifications'
+import { useFilters } from './useFilters'
 
 export const useReports = () => {
   const [reports, setReports] = React.useState<Report[]>()
@@ -12,6 +13,7 @@ export const useReports = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const [isLoadingNexPage, setIsLoadingNexPage] = React.useState(false)
   const { isMuted, addNotification } = useNotifications()
+  const { filters } = useFilters()
 
   const { event } = useEvent()
 
@@ -30,9 +32,12 @@ export const useReports = () => {
       if (!updatedReport.id) return
 
       setReports((prevReports) => {
-        return prevReports?.map((report) =>
-          report.id === updatedReport.id ? updatedReport : report
+        // Remove the updated report from its current position
+        const reportsWithoutUpdated = prevReports?.filter(
+          (report) => report.id !== updatedReport.id
         )
+        // Add the updated report to the top of the list
+        return [updatedReport, ...(reportsWithoutUpdated ?? [])]
       })
     }
 
@@ -66,9 +71,10 @@ export const useReports = () => {
     setPage(1)
     setIsLoading(true)
     if (event) {
-      socket.emit('joinRoom', event.id)
+      const roomData = { eventId: event.id, filters }
+      socket.emit('joinRoom', roomData)
       socket.on('joinedRoomSuccessfully', async (res) => {
-        if (res === `Joined to room ${event.id} successfully`) {
+        if (res === `Joined to room ${JSON.stringify(roomData)} successfully`) {
           getReports()
           setIsLoading(false)
         }
@@ -82,11 +88,11 @@ export const useReports = () => {
       socket.off('joinedRoomSuccessfully')
       socket.off('reportsCount')
     }
-  }, [event])
+  }, [event, filters])
 
   const getReports = (page = 1) => {
     if (!event) return
-    socket.emit('getReports', { eventId: event.id, page, perPage })
+    socket.emit('getReports', { eventId: event.id, page, perPage, filters })
   }
 
   const getNextPage = () => {
