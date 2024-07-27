@@ -309,4 +309,6 @@ export const UsersTableBody = () => {
   )
 }
 
-const UsersTableBodyStyle = styled.div``
+const UsersTableBodyStyle = styled.div`
+  margin-top: 0.5rem;
+`
