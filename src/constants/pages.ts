@@ -1,5 +1,6 @@
 import { Home } from '../pages/Home/Home'
 
+import { Graphs } from '../pages/Graphs/Graphs'
 import graphs from '../assets/icons/graphs.svg'
 import { ManageLists } from '../pages/Admin/ManageLists/ManageLists'
 import { UsersPermissions } from '../pages/Admin/UsersPermissions/UsersPermissions'
@@ -14,7 +15,7 @@ export const PAGES = [
   {
     name: 'גרפים',
     path: '/graphs',
-    component: Home,
+    component: Graphs,
     isDisplayNavbar: true,
     icon: graphs,
   },
