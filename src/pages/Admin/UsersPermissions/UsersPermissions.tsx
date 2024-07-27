@@ -1,22 +1,32 @@
+import React from 'react'
 import styled from 'styled-components'
 
+import { UserForm } from './UserForm'
 import { UsersTableBody } from './UsersTableBody'
 import { UsersTableHeader } from './UsersTableHeader'
 import { CenterContainer } from '../../../components/UI/CenterContainer'
 
 export const UsersPermissions = () => {
+  const [isAddUserOpen, setIsAddUserOpen] = React.useState(false)
   return (
     <UsersPermissionsStyle>
       <CenterContainer>
         <TopStyle>
           <h1>רשימת משתמשים</h1>
-          <button>+ הוספה</button>
+          <button onClick={() => setIsAddUserOpen(true)}>+ הוספה</button>
         </TopStyle>
         <TableStyle>
           <UsersTableHeader />
-          <UsersTableBody/>
+          <UsersTableBody />
         </TableStyle>
       </CenterContainer>
+      {isAddUserOpen && (
+        <UserForm
+          isOpen={isAddUserOpen}
+          handleClose={() => setIsAddUserOpen(false)}
+          title="הוספת משתמש"
+        />
+      )}
     </UsersPermissionsStyle>
   )
 }
