@@ -1,12 +1,20 @@
 import styled from 'styled-components'
+import { Switch } from '@mui/material'
 
 import { User } from './UsersTableBody'
+import { updateItem } from '../../../api/api'
+import { useMutationCustom } from '../../../hooks/useMutationCustom'
 
 interface UserItemProps {
   user: User
 }
 
 export const UserItem = ({ user }: UserItemProps) => {
+  const { mutate } = useMutationCustom({
+    mutationFn: (updateUser: User) => updateItem('users', updateUser),
+    queryKey: ['users'],
+  })
+
   return (
     <UserItemStyle>
       <div className="item name">{user.name}</div>
@@ -14,7 +22,17 @@ export const UserItem = ({ user }: UserItemProps) => {
       <div className="item classification">{user.classification}</div>
       <div className="item email">{user.email}</div>
       <div className="item display-name">{user.displayName}</div>
-      <div className="item role"> {user.role}</div>
+      <div className="item role">
+        <Switch
+          defaultChecked={!user.role}
+          onChange={(_, checked) => mutate({ ...user, role: Number(!checked) })}
+          sx={{
+            '.MuiSwitch-track': {
+              backgroundColor: '#dedede',
+            },
+          }}
+        />
+      </div>
     </UserItemStyle>
   )
 }
@@ -25,13 +43,34 @@ const UserItemStyle = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0.375rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   overflow: hidden;
-  margin: 0.5rem 0;
   overflow-wrap: anywhere;
+
+  & span {
+    color: ${({ theme }) => theme.colors.white};
+  }
 
   & .item {
     align-self: center;
+  }
+
+  & .name {
+    width: 15%;
+  }
+  & .user-name {
+    width: 10%;
+  }
+  & .classification {
+    width: 10%;
+  }
+  & .email {
+    width: 15%;
+  }
+  & .display-name {
+    width: 40%;
+  }
+  & .role {
+    width: 10%;
   }
 `
