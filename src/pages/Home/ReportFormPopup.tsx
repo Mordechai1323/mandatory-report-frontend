@@ -63,16 +63,17 @@ export const ReportFormPopup = ({
       socket.off('updateReport', handleUpdateReport)
     }
 
-    const handleCreateReport = (res: 'success' | 'failed') => {
+    const handleCreateReport = (newReport: Report) => {
       setIsLoading(false)
       handleClose()
+      setUserChoices(newReport)
 
-      if (res === 'success') {
+      if (newReport.id) {
         notify('success', 'הדיווח נשלח בהצלחה')
       } else {
         notify('error', 'הדיווח לא נשלח, נסה שוב')
       }
-      socket.off('createReportStatus', handleCreateReport)
+      socket.off('createReport', handleCreateReport)
     }
 
     if (isEdit && report) {
@@ -81,7 +82,7 @@ export const ReportFormPopup = ({
     } else {
       //TODO: change to real user id
       socket.emit('createReport', { ...data, eventId, createdBy: '212555569' })
-      socket.on('createReportStatus', handleCreateReport)
+      socket.on('createReport', handleCreateReport)
     }
   }
 
