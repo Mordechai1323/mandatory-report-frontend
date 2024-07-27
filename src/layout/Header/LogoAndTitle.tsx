@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import lamdanLogo from '../../assets/lamdanLogo.svg'
+import siteLogo from '../../assets/siteLogo.svg'
 
 export const LogoAndTitle = () => {
   return (
     <LogoAndTitleStyle>
       <LogoStyle>
-        <img src={lamdanLogo} alt="lamdan logo" />
+        <img src={siteLogo} alt="site logo" />
       </LogoStyle>
       <Link to="/">
         <h1>דיווחי חובה</h1>
@@ -27,7 +27,7 @@ const LogoAndTitleStyle = styled.div`
     & h1 {
       font-weight: 200;
       font-size: 1.5rem;
-      margin: 0 1rem;
+      margin-right: 0.5rem;
     }
   }
 `
