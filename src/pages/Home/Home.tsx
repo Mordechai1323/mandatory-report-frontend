@@ -7,6 +7,7 @@ import { ReportFormPopup } from './ReportFormPopup'
 import { useAddReport } from '../../hooks/useAddReport'
 import { NavigationAndFilters } from './NavigationAndFilters/NavigationAndFilters'
 import { ReportsTable } from '../../components/Reports/ReportsTable'
+import { NoEventChoose } from '../../components/Events/NoEventChoose'
 
 export const Home = () => {
   const { isAddReportPopupOpen, closeAddReportPopup } = useAddReport()
@@ -20,21 +21,19 @@ export const Home = () => {
     }
   }, [])
 
+  if (!event) return <NoEventChoose />
+
   return (
     <HomeStyle>
       <NavigationAndFilters />
-      {event && (
-        <>
-          <ReportsTable />
-          {isAddReportPopupOpen && (
-            <ReportFormPopup
-              isOpen={isAddReportPopupOpen}
-              handleClose={closeAddReportPopup}
-              title="הוספת דיווח"
-              eventId={event.id}
-            />
-          )}
-        </>
+      <ReportsTable />
+      {isAddReportPopupOpen && (
+        <ReportFormPopup
+          isOpen={isAddReportPopupOpen}
+          handleClose={closeAddReportPopup}
+          title="הוספת דיווח"
+          eventId={event.id}
+        />
       )}
     </HomeStyle>
   )
