@@ -57,6 +57,12 @@ export const GlobalStyles = createGlobalStyle`
         background: none;
     }
 
+    textarea{
+        resize: none;
+        font-family: 'Segoe UI', sans-serif;
+
+    }
+
 
 
 
