@@ -23,7 +23,7 @@ export function RequireAuth({ allowedRoles }: RequireAuthProps) {
       } catch (err) {
         console.error(err)
         // DELETE THIS LINE AFTER IMPLEMENTING ADFS
-        setAuth({name: 'test', role: 0, uniqueID: 'test-uniqueID'})
+        setAuth({name: 'test', role: 1, uniqueID: '212555569'})
       } finally {
         setIisTryToLogin(false)
       }

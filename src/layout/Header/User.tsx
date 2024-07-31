@@ -5,12 +5,14 @@ import { useAuth } from '../../hooks/useAuth'
 import { UserMenuPopup } from './UserMenuPopup'
 import UserIcon from '../../assets/icons/user.svg'
 import { useClickOutSide } from '../../hooks/useClickOutSide'
-import { PresetForm } from '../../components/PresetForm'
+import { PresetForm } from '../../components/Presets/PresetForm'
+import { EditPresets } from '../../components/Presets/EditPresets'
 
 export const User = () => {
   const { auth } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
   const [isAddPresetOpen, setIsAddPresetOpen] = React.useState(false)
+  const [isEditPresetOpen, setIsEditPresetOpen] = React.useState(false)
   const { ref } = useClickOutSide<HTMLDivElement>(() => setIsMenuOpen(false))
 
   return (
@@ -23,6 +25,7 @@ export const User = () => {
         <UserMenuPopup
           closeMenu={() => setIsMenuOpen(false)}
           openAddPreset={() => setIsAddPresetOpen(true)}
+          openEditPresets={() => setIsEditPresetOpen(true)}
         />
       )}
       {isAddPresetOpen && (
@@ -31,6 +34,9 @@ export const User = () => {
           handleClose={() => setIsAddPresetOpen(false)}
           title="הוספת פריסט"
         />
+      )}
+      {isEditPresetOpen && (
+        <EditPresets isOpen={isEditPresetOpen} handleClose={() => setIsEditPresetOpen(false)} />
       )}
     </UserStyle>
   )

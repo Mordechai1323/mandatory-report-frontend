@@ -8,9 +8,14 @@ import { SelectOption } from '../../pages/Home/NavigationAndFilters/Filters/Sele
 interface UserMenuPopupProps {
   closeMenu: () => void
   openAddPreset: () => void
+  openEditPresets: () => void
 }
 
-export const UserMenuPopup = ({ closeMenu, openAddPreset }: UserMenuPopupProps) => {
+export const UserMenuPopup = ({
+  closeMenu,
+  openAddPreset,
+  openEditPresets,
+}: UserMenuPopupProps) => {
   const { auth } = useAuth()
   const navigate = useNavigate()
 
@@ -26,6 +31,15 @@ export const UserMenuPopup = ({ closeMenu, openAddPreset }: UserMenuPopupProps) 
         value: 'הוספת פריסט',
         onClickHandler: () => {
           openAddPreset()
+          closeMenu()
+        },
+        roleAllowed: 1,
+      },
+      {
+        label: 'עריכת פריסט',
+        value: 'עריכת פריסט',
+        onClickHandler: () => {
+          openEditPresets()
           closeMenu()
         },
         roleAllowed: 1,
